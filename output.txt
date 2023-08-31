@@ -1,0 +1,241 @@
+HEADER: #include <stdio.h>
+KEYWORD: void
+IDENTIFIER: swap
+Left Parenthesis
+KEYWORD: int
+Operator: *
+IDENTIFIER: xp
+Comma
+KEYWORD: int
+Operator: *
+IDENTIFIER: yp
+Right Parenthesis
+Left Curly Brace
+KEYWORD: int
+IDENTIFIER: temp
+Operator: =
+Operator: *
+IDENTIFIER: xp
+Operator: ;
+Operator: *
+IDENTIFIER: xp
+Operator: =
+Operator: *
+IDENTIFIER: yp
+Operator: ;
+Operator: *
+IDENTIFIER: yp
+Operator: =
+IDENTIFIER: temp
+Operator: ;
+Right Curly Brace
+KEYWORD: void
+IDENTIFIER: selectionSort
+Left Parenthesis
+KEYWORD: int
+IDENTIFIER: arr
+Left Square Bracket
+Right Square Bracket
+Comma
+KEYWORD: int
+IDENTIFIER: n
+Right Parenthesis
+Left Curly Brace
+KEYWORD: int
+IDENTIFIER: i
+Comma
+IDENTIFIER: j
+Comma
+IDENTIFIER: min_idx
+Operator: ;
+KEYWORD: for
+Left Parenthesis
+IDENTIFIER: i
+Operator: =
+INTEGER: 0
+Operator: ;
+IDENTIFIER: i
+Operator: <
+IDENTIFIER: n
+Operator: -
+INTEGER: 1
+Operator: ;
+IDENTIFIER: i
+Operator: ++
+Right Parenthesis
+Left Curly Brace
+IDENTIFIER: min_idx
+Operator: =
+IDENTIFIER: i
+Operator: ;
+KEYWORD: for
+Left Parenthesis
+IDENTIFIER: j
+Operator: =
+IDENTIFIER: i
+Operator: +
+INTEGER: 1
+Operator: ;
+IDENTIFIER: j
+Operator: <
+IDENTIFIER: n
+Operator: ;
+IDENTIFIER: j
+Operator: ++
+Right Parenthesis
+KEYWORD: if
+Left Parenthesis
+IDENTIFIER: arr
+Left Square Bracket
+IDENTIFIER: j
+Right Square Bracket
+Operator: <
+IDENTIFIER: arr
+Left Square Bracket
+IDENTIFIER: min_idx
+Right Square Bracket
+Right Parenthesis
+IDENTIFIER: min_idx
+Operator: =
+IDENTIFIER: j
+Operator: ;
+IDENTIFIER: swap
+Left Parenthesis
+Operator: &
+IDENTIFIER: arr
+Left Square Bracket
+IDENTIFIER: min_idx
+Right Square Bracket
+Comma
+Operator: &
+IDENTIFIER: arr
+Left Square Bracket
+IDENTIFIER: i
+Right Square Bracket
+Right Parenthesis
+Operator: ;
+Right Curly Brace
+Right Curly Brace
+KEYWORD: void
+IDENTIFIER: printArray
+Left Parenthesis
+KEYWORD: int
+IDENTIFIER: arr
+Left Square Bracket
+Right Square Bracket
+Comma
+KEYWORD: int
+IDENTIFIER: size
+Right Parenthesis
+Left Curly Brace
+KEYWORD: int
+IDENTIFIER: i
+Operator: ;
+KEYWORD: for
+Left Parenthesis
+IDENTIFIER: i
+Operator: =
+INTEGER: 0
+Operator: ;
+IDENTIFIER: i
+Operator: <
+IDENTIFIER: size
+Operator: ;
+IDENTIFIER: i
+Operator: ++
+Right Parenthesis
+IDENTIFIER: printf
+Left Parenthesis
+STRING: "%d "
+Comma
+IDENTIFIER: arr
+Left Square Bracket
+IDENTIFIER: i
+Right Square Bracket
+Right Parenthesis
+Operator: ;
+IDENTIFIER: printf
+Left Parenthesis
+STRING: "\n"
+Right Parenthesis
+Operator: ;
+Right Curly Brace
+KEYWORD: int
+IDENTIFIER: main
+Left Parenthesis
+Right Parenthesis
+Left Curly Brace
+KEYWORD: int
+IDENTIFIER: arr
+Left Square Bracket
+Right Square Bracket
+Operator: =
+Left Curly Brace
+INTEGER: 0
+Comma
+INTEGER: 23
+Comma
+INTEGER: 14
+Comma
+INTEGER: 12
+Comma
+INTEGER: 9
+Right Curly Brace
+Operator: ;
+KEYWORD: int
+IDENTIFIER: n
+Operator: =
+KEYWORD: sizeof
+Left Parenthesis
+IDENTIFIER: arr
+Right Parenthesis
+Operator: /
+KEYWORD: sizeof
+Left Parenthesis
+IDENTIFIER: arr
+Left Square Bracket
+INTEGER: 0
+Right Square Bracket
+Right Parenthesis
+Operator: ;
+IDENTIFIER: printf
+Left Parenthesis
+STRING: "Original array: \n"
+Right Parenthesis
+Operator: ;
+IDENTIFIER: printArray
+Left Parenthesis
+IDENTIFIER: arr
+Comma
+IDENTIFIER: n
+Right Parenthesis
+Operator: ;
+IDENTIFIER: selectionSort
+Left Parenthesis
+IDENTIFIER: arr
+Comma
+IDENTIFIER: n
+Right Parenthesis
+Operator: ;
+IDENTIFIER: printf
+Left Parenthesis
+STRING: "\nSorted array in Ascending order: \n"
+Right Parenthesis
+Operator: ;
+IDENTIFIER: printArray
+Left Parenthesis
+IDENTIFIER: arr
+Comma
+IDENTIFIER: n
+Right Parenthesis
+Operator: ;
+KEYWORD: int
+IDENTIFIER: a
+Operator: ;
+KEYWORD: int
+IDENTIFIER: b
+Operator: ;
+KEYWORD: return
+INTEGER: 0
+Operator: ;
+Right Curly Brace
