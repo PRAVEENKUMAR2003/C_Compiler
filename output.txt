@@ -1,241 +1,272 @@
-HEADER: #include <stdio.h>
-KEYWORD: void
-IDENTIFIER: swap
-Left Parenthesis
-KEYWORD: int
-Operator: *
-IDENTIFIER: xp
-Comma
-KEYWORD: int
-Operator: *
-IDENTIFIER: yp
-Right Parenthesis
-Left Curly Brace
-KEYWORD: int
-IDENTIFIER: temp
-Operator: =
-Operator: *
-IDENTIFIER: xp
-Operator: ;
-Operator: *
-IDENTIFIER: xp
-Operator: =
-Operator: *
-IDENTIFIER: yp
-Operator: ;
-Operator: *
-IDENTIFIER: yp
-Operator: =
-IDENTIFIER: temp
-Operator: ;
-Right Curly Brace
-KEYWORD: void
-IDENTIFIER: selectionSort
-Left Parenthesis
-KEYWORD: int
-IDENTIFIER: arr
-Left Square Bracket
-Right Square Bracket
-Comma
-KEYWORD: int
-IDENTIFIER: n
-Right Parenthesis
-Left Curly Brace
-KEYWORD: int
-IDENTIFIER: i
-Comma
-IDENTIFIER: j
-Comma
-IDENTIFIER: min_idx
-Operator: ;
-KEYWORD: for
-Left Parenthesis
-IDENTIFIER: i
-Operator: =
-INTEGER: 0
-Operator: ;
-IDENTIFIER: i
-Operator: <
-IDENTIFIER: n
-Operator: -
-INTEGER: 1
-Operator: ;
-IDENTIFIER: i
-Operator: ++
-Right Parenthesis
-Left Curly Brace
-IDENTIFIER: min_idx
-Operator: =
-IDENTIFIER: i
-Operator: ;
-KEYWORD: for
-Left Parenthesis
-IDENTIFIER: j
-Operator: =
-IDENTIFIER: i
-Operator: +
-INTEGER: 1
-Operator: ;
-IDENTIFIER: j
-Operator: <
-IDENTIFIER: n
-Operator: ;
-IDENTIFIER: j
-Operator: ++
-Right Parenthesis
-KEYWORD: if
-Left Parenthesis
-IDENTIFIER: arr
-Left Square Bracket
-IDENTIFIER: j
-Right Square Bracket
-Operator: <
-IDENTIFIER: arr
-Left Square Bracket
-IDENTIFIER: min_idx
-Right Square Bracket
-Right Parenthesis
-IDENTIFIER: min_idx
-Operator: =
-IDENTIFIER: j
-Operator: ;
-IDENTIFIER: swap
-Left Parenthesis
-Operator: &
-IDENTIFIER: arr
-Left Square Bracket
-IDENTIFIER: min_idx
-Right Square Bracket
-Comma
-Operator: &
-IDENTIFIER: arr
-Left Square Bracket
-IDENTIFIER: i
-Right Square Bracket
-Right Parenthesis
-Operator: ;
-Right Curly Brace
-Right Curly Brace
-KEYWORD: void
-IDENTIFIER: printArray
-Left Parenthesis
-KEYWORD: int
-IDENTIFIER: arr
-Left Square Bracket
-Right Square Bracket
-Comma
-KEYWORD: int
-IDENTIFIER: size
-Right Parenthesis
-Left Curly Brace
-KEYWORD: int
-IDENTIFIER: i
-Operator: ;
-KEYWORD: for
-Left Parenthesis
-IDENTIFIER: i
-Operator: =
-INTEGER: 0
-Operator: ;
-IDENTIFIER: i
-Operator: <
-IDENTIFIER: size
-Operator: ;
-IDENTIFIER: i
-Operator: ++
-Right Parenthesis
-IDENTIFIER: printf
-Left Parenthesis
-STRING: "%d "
-Comma
-IDENTIFIER: arr
-Left Square Bracket
-IDENTIFIER: i
-Right Square Bracket
-Right Parenthesis
-Operator: ;
-IDENTIFIER: printf
-Left Parenthesis
-STRING: "\n"
-Right Parenthesis
-Operator: ;
-Right Curly Brace
-KEYWORD: int
-IDENTIFIER: main
-Left Parenthesis
-Right Parenthesis
-Left Curly Brace
-KEYWORD: int
-IDENTIFIER: arr
-Left Square Bracket
-Right Square Bracket
-Operator: =
-Left Curly Brace
-INTEGER: 0
-Comma
-INTEGER: 23
-Comma
-INTEGER: 14
-Comma
-INTEGER: 12
-Comma
-INTEGER: 9
-Right Curly Brace
-Operator: ;
-KEYWORD: int
-IDENTIFIER: n
-Operator: =
-KEYWORD: sizeof
-Left Parenthesis
-IDENTIFIER: arr
-Right Parenthesis
-Operator: /
-KEYWORD: sizeof
-Left Parenthesis
-IDENTIFIER: arr
-Left Square Bracket
-INTEGER: 0
-Right Square Bracket
-Right Parenthesis
-Operator: ;
-IDENTIFIER: printf
-Left Parenthesis
-STRING: "Original array: \n"
-Right Parenthesis
-Operator: ;
-IDENTIFIER: printArray
-Left Parenthesis
-IDENTIFIER: arr
-Comma
-IDENTIFIER: n
-Right Parenthesis
-Operator: ;
-IDENTIFIER: selectionSort
-Left Parenthesis
-IDENTIFIER: arr
-Comma
-IDENTIFIER: n
-Right Parenthesis
-Operator: ;
-IDENTIFIER: printf
-Left Parenthesis
-STRING: "\nSorted array in Ascending order: \n"
-Right Parenthesis
-Operator: ;
-IDENTIFIER: printArray
-Left Parenthesis
-IDENTIFIER: arr
-Comma
-IDENTIFIER: n
-Right Parenthesis
-Operator: ;
-KEYWORD: int
-IDENTIFIER: a
-Operator: ;
-KEYWORD: int
-IDENTIFIER: b
-Operator: ;
-KEYWORD: return
-INTEGER: 0
-Operator: ;
-Right Curly Brace
+Line No. 1 SINGLE LINE COMMENT - // Optimized implementation of Bubble sort
+Line No. 2 HEADER - #include <stdbool.h>
+Line No. 3 HEADER - #include <stdio.h>
+Line No. 12 MULTI LINE COMMENT
+Line No. 14 IDENTIFIER - void
+Line No. 14 FUNCTION - swap(
+Line No. 14 IDENTIFIER - int
+Line No. 14 OPERATOR - *
+Line No. 14 IDENTIFIER - xp
+Line No. 14 COMMA - ,
+Line No. 14 IDENTIFIER - int
+Line No. 14 OPERATOR - *
+Line No. 14 IDENTIFIER - yp
+Line No. 14 RIGHT PARENTHESIS - )
+Line No. 15 LEFT BRACE - {
+Line No. 16 IDENTIFIER - int
+Line No. 16 IDENTIFIER - temp
+Line No. 16 OPERATOR - =
+Line No. 16 OPERATOR - *
+Line No. 16 IDENTIFIER - xp
+Line No. 16 SEMICOLON - ;
+Line No. 17 OPERATOR - *
+Line No. 17 IDENTIFIER - xp
+Line No. 17 OPERATOR - =
+Line No. 17 OPERATOR - *
+Line No. 17 IDENTIFIER - yp
+Line No. 17 SEMICOLON - ;
+Line No. 18 OPERATOR - *
+Line No. 18 IDENTIFIER - yp
+Line No. 18 OPERATOR - =
+Line No. 18 IDENTIFIER - temp
+Line No. 18 SEMICOLON - ;
+Line No. 19 RIGHT BRACE - }
+Line No. 21 SINGLE LINE COMMENT - // An optimized version of Bubble Sort
+Line No. 22 IDENTIFIER - void
+Line No. 22 FUNCTION - bubbleSort(
+Line No. 22 IDENTIFIER - int
+Line No. 22 IDENTIFIER - arr
+Line No. 22 LEFT BRACKET - [
+Line No. 22 RIGHT BRACKET - ]
+Line No. 22 COMMA - ,
+Line No. 22 IDENTIFIER - int
+Line No. 22 IDENTIFIER - n
+Line No. 22 RIGHT PARENTHESIS - )
+Line No. 23 LEFT BRACE - {
+Line No. 24 IDENTIFIER - int
+Line No. 24 IDENTIFIER - i
+Line No. 24 COMMA - ,
+Line No. 24 IDENTIFIER - j
+Line No. 24 SEMICOLON - ;
+Line No. 25 IDENTIFIER - bool
+Line No. 25 IDENTIFIER - swapped
+Line No. 25 SEMICOLON - ;
+Line No. 26 FUNCTION - for (
+Line No. 26 IDENTIFIER - i
+Line No. 26 OPERATOR - =
+Line No. 26 Integer - 0
+Line No. 26 SEMICOLON - ;
+Line No. 26 IDENTIFIER - i
+Line No. 26 OPERATOR - <
+Line No. 26 IDENTIFIER - n
+Line No. 26 OPERATOR - -
+Line No. 26 Integer - 1
+Line No. 26 SEMICOLON - ;
+Line No. 26 IDENTIFIER - i
+Line No. 26 OPERATOR - ++
+Line No. 26 RIGHT PARENTHESIS - )
+Line No. 26 LEFT BRACE - {
+Line No. 27 IDENTIFIER - swapped
+Line No. 27 OPERATOR - =
+Line No. 27 IDENTIFIER - false
+Line No. 27 SEMICOLON - ;
+Line No. 28 FUNCTION - for (
+Line No. 28 IDENTIFIER - j
+Line No. 28 OPERATOR - =
+Line No. 28 Integer - 0
+Line No. 28 SEMICOLON - ;
+Line No. 28 IDENTIFIER - j
+Line No. 28 OPERATOR - <
+Line No. 28 IDENTIFIER - n
+Line No. 28 OPERATOR - -
+Line No. 28 IDENTIFIER - i
+Line No. 28 OPERATOR - -
+Line No. 28 Integer - 1
+Line No. 28 SEMICOLON - ;
+Line No. 28 IDENTIFIER - j
+Line No. 28 OPERATOR - ++
+Line No. 28 RIGHT PARENTHESIS - )
+Line No. 28 LEFT BRACE - {
+Line No. 29 FUNCTION - if (
+Line No. 29 IDENTIFIER - arr
+Line No. 29 LEFT BRACKET - [
+Line No. 29 IDENTIFIER - j
+Line No. 29 RIGHT BRACKET - ]
+Line No. 29 OPERATOR - >
+Line No. 29 IDENTIFIER - arr
+Line No. 29 LEFT BRACKET - [
+Line No. 29 IDENTIFIER - j
+Line No. 29 OPERATOR - +
+Line No. 29 Integer - 1
+Line No. 29 RIGHT BRACKET - ]
+Line No. 29 RIGHT PARENTHESIS - )
+Line No. 29 LEFT BRACE - {
+Line No. 30 FUNCTION - swap(
+Line No. 30 OPERATOR - &
+Line No. 30 IDENTIFIER - arr
+Line No. 30 LEFT BRACKET - [
+Line No. 30 IDENTIFIER - j
+Line No. 30 RIGHT BRACKET - ]
+Line No. 30 COMMA - ,
+Line No. 30 OPERATOR - &
+Line No. 30 IDENTIFIER - arr
+Line No. 30 LEFT BRACKET - [
+Line No. 30 IDENTIFIER - j
+Line No. 30 OPERATOR - +
+Line No. 30 Integer - 1
+Line No. 30 RIGHT BRACKET - ]
+Line No. 30 RIGHT PARENTHESIS - )
+Line No. 30 SEMICOLON - ;
+Line No. 31 IDENTIFIER - swapped
+Line No. 31 OPERATOR - =
+Line No. 31 IDENTIFIER - true
+Line No. 31 SEMICOLON - ;
+Line No. 32 RIGHT BRACE - }
+Line No. 33 RIGHT BRACE - }
+Line No. 35 SINGLE LINE COMMENT - // If no two elements were swapped by inner loop,
+Line No. 36 SINGLE LINE COMMENT - // then break
+Line No. 37 FUNCTION - if (
+Line No. 37 IDENTIFIER - swapped
+Line No. 37 OPERATOR - ==
+Line No. 37 IDENTIFIER - false
+Line No. 37 RIGHT PARENTHESIS - )
+Line No. 38 IDENTIFIER - break
+Line No. 38 SEMICOLON - ;
+Line No. 39 RIGHT BRACE - }
+Line No. 40 IDENTIFIER - int
+Line No. 40 IDENTIFIER - f
+Line No. 40 OPERATOR - =
+Line No. 40 Octal - 034534
+Line No. 40 COMMA - ,
+Line No. 40 IDENTIFIER - dfff
+Line No. 40 OPERATOR - =
+Line No. 40 Hexadecimal - 0x31413
+Line No. 40 COMMA - ,
+Line No. 40 IDENTIFIER - bi
+Line No. 40 OPERATOR - =
+Line No. 40 Binary - 0b10101010
+Line No. 40 SEMICOLON - ;
+Line No. 41 IDENTIFIER - char
+Line No. 41 IDENTIFIER - bb
+Line No. 41 LEFT BRACKET - [
+Line No. 41 RIGHT BRACKET - ]
+Line No. 41 OPERATOR - =
+Line No. 41 STRING - "sadfgasgf"
+Line No. 41 SEMICOLON - ;
+Line No. 42 IDENTIFIER - char
+Line No. 42 IDENTIFIER - a
+Line No. 42 OPERATOR - =
+Line No. 42 CHARACTER - 'd'
+Line No. 42 SEMICOLON - ;
+Line No. 43 IDENTIFIER - char
+Line No. 43 IDENTIFIER - asas
+Line No. 43 OPERATOR - =
+Line No. 43 CHARACTER - 'd'
+Line No. 43 SEMICOLON - ;
+Line No. 44 IDENTIFIER - char
+Line No. 44 IDENTIFIER - bfsb
+Line No. 44 LEFT BRACKET - [
+Line No. 44 RIGHT BRACKET - ]
+Line No. 44 OPERATOR - =
+Line No. 44 STRING - "sadfgasgf"
+Line No. 44 SEMICOLON - ;
+Line No. 46 OPERATOR - =
+Line No. 46 OPERATOR - >
+Line No. 47 RIGHT BRACE - }
+Line No. 49 SINGLE LINE COMMENT - // Function to print an array
+Line No. 50 IDENTIFIER - void
+Line No. 50 FUNCTION - printArray(
+Line No. 50 IDENTIFIER - int
+Line No. 50 IDENTIFIER - arr
+Line No. 50 LEFT BRACKET - [
+Line No. 50 RIGHT BRACKET - ]
+Line No. 50 COMMA - ,
+Line No. 50 IDENTIFIER - int
+Line No. 50 IDENTIFIER - size
+Line No. 50 RIGHT PARENTHESIS - )
+Line No. 51 LEFT BRACE - {
+Line No. 52 IDENTIFIER - int
+Line No. 52 IDENTIFIER - i
+Line No. 52 SEMICOLON - ;
+Line No. 53 FUNCTION - for (
+Line No. 53 IDENTIFIER - i
+Line No. 53 OPERATOR - =
+Line No. 53 Integer - 0
+Line No. 53 SEMICOLON - ;
+Line No. 53 IDENTIFIER - i
+Line No. 53 OPERATOR - <
+Line No. 53 IDENTIFIER - size
+Line No. 53 SEMICOLON - ;
+Line No. 53 IDENTIFIER - i
+Line No. 53 OPERATOR - ++
+Line No. 53 RIGHT PARENTHESIS - )
+Line No. 54 FUNCTION - printf(
+Line No. 54 STRING - "%d "
+Line No. 54 COMMA - ,
+Line No. 54 IDENTIFIER - arr
+Line No. 54 LEFT BRACKET - [
+Line No. 54 IDENTIFIER - i
+Line No. 54 RIGHT BRACKET - ]
+Line No. 54 RIGHT PARENTHESIS - )
+Line No. 54 SEMICOLON - ;
+Line No. 55 RIGHT BRACE - }
+Line No. 57 SINGLE LINE COMMENT - // Driver program to test above functions
+Line No. 58 IDENTIFIER - int
+Line No. 58 FUNCTION - main(
+Line No. 58 RIGHT PARENTHESIS - )
+Line No. 59 LEFT BRACE - {
+Line No. 60 IDENTIFIER - int
+Line No. 60 IDENTIFIER - arr
+Line No. 60 LEFT BRACKET - [
+Line No. 60 RIGHT BRACKET - ]
+Line No. 60 OPERATOR - =
+Line No. 60 LEFT BRACE - {
+Line No. 60 Integer - 64
+Line No. 60 COMMA - ,
+Line No. 60 Integer - 34
+Line No. 60 COMMA - ,
+Line No. 60 Integer - 25
+Line No. 60 COMMA - ,
+Line No. 60 Integer - 12
+Line No. 60 COMMA - ,
+Line No. 60 Integer - 22
+Line No. 60 COMMA - ,
+Line No. 60 Integer - 11
+Line No. 60 COMMA - ,
+Line No. 60 Integer - 90
+Line No. 60 RIGHT BRACE - }
+Line No. 60 SEMICOLON - ;
+Line No. 61 IDENTIFIER - int
+Line No. 61 IDENTIFIER - n
+Line No. 61 OPERATOR - =
+Line No. 61 FUNCTION - sizeof(
+Line No. 61 IDENTIFIER - arr
+Line No. 61 RIGHT PARENTHESIS - )
+Line No. 61 OPERATOR - /
+Line No. 61 FUNCTION - sizeof(
+Line No. 61 IDENTIFIER - arr
+Line No. 61 LEFT BRACKET - [
+Line No. 61 Integer - 0
+Line No. 61 RIGHT BRACKET - ]
+Line No. 61 RIGHT PARENTHESIS - )
+Line No. 61 SEMICOLON - ;
+Line No. 62 FUNCTION - bubbleSort(
+Line No. 62 IDENTIFIER - arr
+Line No. 62 COMMA - ,
+Line No. 62 IDENTIFIER - n
+Line No. 62 RIGHT PARENTHESIS - )
+Line No. 62 SEMICOLON - ;
+Line No. 63 FUNCTION - printf(
+Line No. 63 STRING - "Sorted array: \n"
+Line No. 63 RIGHT PARENTHESIS - )
+Line No. 63 SEMICOLON - ;
+Line No. 64 FUNCTION - printArray(
+Line No. 64 IDENTIFIER - arr
+Line No. 64 COMMA - ,
+Line No. 64 IDENTIFIER - n
+Line No. 64 RIGHT PARENTHESIS - )
+Line No. 64 SEMICOLON - ;
+Line No. 65 IDENTIFIER - return
+Line No. 65 Integer - 0
+Line No. 65 SEMICOLON - ;
+Line No. 66 RIGHT BRACE - }

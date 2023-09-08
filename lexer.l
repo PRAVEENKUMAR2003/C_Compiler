@@ -1,53 +1,107 @@
-
+%option yylineno
 %{
 #include <stdio.h>
 int cnt_ln = 1; 
 FILE *output_file;
  FILE *input_file;
+	int nested_count = 0;
+	int check_nested = 0;
 %}
 
+
+/* Regular definitions */
+num              	[0-9]
+alpha              	[a-zA-Z]
+alphanum            {alpha}|{num}
+keyword             char|int|main|float|double|short|long|unsigned|signed|main|while|for|break|if|else|continue|return|void|struct
+escape_sequences    0|a|b|f|n|r|t|v|"\\"|"\""|"\'"
+ws  				[ \t\r\f\v]+
+
+%x DFA_ML
+
+
+
 %%
-\/\/.* ;
-\/\*(.*\n)*\*\/ ;
-^#include[ \t]+<.*> { fprintf(output_file, "HEADER: %s\n", yytext); }
-(auto|double|int|struct|break|else|long|switch|case|enum|register|typedef|char|extern|return|union|continue|for|signed|void|do|if|static|while|default|goto|sizeof|volatile|const|float|short) {fprintf(output_file, "KEYWORD: %s\n", yytext);}
-([a-zA-Z]|_)(([a-zA-Z]|[0-9]|_)*) {fprintf(output_file, "IDENTIFIER: %s\n", yytext);}
-[\n] {cnt_ln++;}
-[0-9]+\.[0-9]* {fprintf(output_file, "FLOAT: %s\n", yytext);}
-[0-9]+[Ee][+-]?[0-9]+ {fprintf(output_file, "EXPONENTIAL: %s\n", yytext);}
-[0-9]+[Ll] {fprintf(output_file, "LONG INTEGER: %s\n", yytext);}
-[0-9]+ {fprintf(output_file, "INTEGER: %s\n", yytext);}
-[+]    { fprintf(output_file, "Operator: +\n"); }
-[-]    { fprintf(output_file, "Operator: -\n"); }
-[*]    { fprintf(output_file, "Operator: *\n"); }
-[/]    { fprintf(output_file, "Operator: /\n"); }
-[%%]   { fprintf(output_file, "Operator: %%\n"); }
-"--"   { fprintf(output_file, "Operator: --\n"); }
-"++"   { fprintf(output_file, "Operator: ++\n"); }
-[=]    { fprintf(output_file, "Operator: =\n"); }
-">="   { fprintf(output_file, "Operator: >=\n"); }
-"<="   { fprintf(output_file, "Operator: <=\n"); }
-">"   { fprintf(output_file, "Operator: >\n"); }
-"<"   { fprintf(output_file, "Operator: <\n"); }
-"!="   { fprintf(output_file, "Operator: !=\n"); }
-"=="   { fprintf(output_file, "Operator: ==\n"); }
-[&]    { fprintf(output_file, "Operator: &\n"); }
-[\|]   { fprintf(output_file, "Operator: |\n"); }
-"\|\|" { fprintf(output_file, "Operator: ||\n"); }
-"&&"   { fprintf(output_file, "Operator: &&\n"); }
-[\^]   { fprintf(output_file, "Operator: ^\n"); }
-[!]    { fprintf(output_file, "Operator: !\n"); } 
-[;]    { fprintf(output_file, "Operator: ;\n"); }
-\"([^\\\n]|(\\.))*\" { fprintf(output_file, "STRING: %s\n", yytext); }
-\'([^\\\n]|(\\.))*\' { fprintf(output_file, "CHARACTER: %s\n", yytext); }
-[(]    { fprintf(output_file, "Left Parenthesis\n"); }
-[)]    { fprintf(output_file, "Right Parenthesis\n"); }
-[{]    { fprintf(output_file, "Left Curly Brace\n"); }
-[}]    { fprintf(output_file, "Right Curly Brace\n"); }
-[\[]   { fprintf(output_file, "Left Square Bracket\n"); }
-[\]]   { fprintf(output_file, "Right Square Bracket\n"); }
-[,]    { fprintf(output_file, "Comma\n"); }
+"//".* { fprintf(output_file, "Line No. %d SINGLE LINE COMMENT - %s\n", yylineno, yytext); }
+"/*" { BEGIN DFA_ML; }
+<DFA_ML>"/*" { ++nested_count; check_nested = 1;}	
+<DFA_ML>"*"+"/" {
+                        if (nested_count) --nested_count;
+                        else{ 
+                            if(check_nested){
+                                fprintf(output_file, "Line No. %d NESTED COMMENT\n", yylineno);
+                                check_nested = 0;
+                                BEGIN INITIAL;
+                            }
+                            else{
+                                fprintf(output_file, "Line No. %d MULTI LINE COMMENT\n", yylineno);
+                                BEGIN INITIAL;
+                            }
+                        } 
+					}
+<DFA_ML>"*"+ ;
+<DFA_ML>[^/*\n]+ ;
+<DFA_ML>[/] ;
+<DFA_ML>\n ;
+<DFA_ML><<EOF>> { fprintf(output_file, "Line No. %d ERROR: MULTI LINE COMMENT NOT CLOSED\n", yylineno); return 0;}
+#include[ ]*[/"<]{alpha}+\.h[/">]   { fprintf(output_file, "Line No. %d HEADER - %s\n", yylineno, yytext);}
+("\"")[^\n\"]*("\"") { fprintf(output_file, "Line No. %d STRING - %s\n", yylineno, yytext);}
+("\"")[^\n\"]* { fprintf(output_file, "Line No. %d ERROR: UNCLOSED STRING - %s\n", yylineno, yytext); return 0;}
+("\'")(("\\"({escape_sequences}))|.)("\'") { fprintf(output_file, "Line No. %d CHARACTER - %s\n", yylineno, yytext);}
+("\'")(((("\\")[^0abfnrtv\\\"\'][^\n\']*))|[^\n\''][^\n\'']+)("\'") { fprintf(output_file, "Line No. %d ERROR: NOT A CHARACTER - %s\n", yylineno, yytext); return 0;}						 
+(keyword) { fprintf(output_file, "Line No. %d KEYWORD - %s\n", yylineno, yytext);}
+0[bB][01]+[uU]?[lL]{0,2} { fprintf(output_file, "Line No. %d Binary - %s\n", yylineno, yytext); }
+0[0-7]+[uU]?[lL]{0,2} { fprintf(output_file, "Line No. %d Octal - %s\n", yylineno, yytext); }
+0[xX][A-Fa-f0-9]+[uU]?[lL]{0,2} { fprintf(output_file, "Line No. %d Hexadecimal - %s\n", yylineno, yytext); }
+[0-9]*\.[0-9]+[eE][+-]?[0-9]+[fF]? { fprintf(output_file, "Line No. %d Float - %s\n", yylineno, yytext); }
+[0-9]+\.[0-9]*[eE][+-]?[0-9]+[fF]? { fprintf(output_file, "Line No. %d Float - %s\n", yylineno, yytext); }
+[0-9]+\.[0-9]+[fF]? { fprintf(output_file, "Line No. %d Float - %s\n", yylineno, yytext); }
+[0-9]+[fF] { fprintf(output_file, "Line No. %d Integer - %s\n", yylineno, yytext); }
+[0-9]+[uU]?[lL]{0,2} { fprintf(output_file, "Line No. %d Integer - %s\n", yylineno, yytext); }
+[0-9]+[eE][+-]?[0-9]+[fF]? { fprintf(output_file, "Line No. %d Integer - %s\n", yylineno, yytext); }
+"&&" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext);}
+"+"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
+"-"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
+"++" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
+"--" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
+"!"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
+"~"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
+"*"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
+"/"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
+"%"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
+">>" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
+"<<" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
+"&"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
+"^"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
+\| { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
+\|\| { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
+"="	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
+">"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
+"<"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
+">=" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
+"<=" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
+"==" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
+"!=" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
+((_|{alpha})({alphanum}|_)*)[ ]*[(]	{ fprintf(output_file, "Line No. %d FUNCTION - %s\n", yylineno, yytext);}
+(_|{alpha})({alphanum}|_)* { fprintf(output_file, "Line No. %d IDENTIFIER - %s\n", yylineno, yytext);}
+[+-]?{num}+ { fprintf(output_file, "Line No. %d INTEGER - %s\n", yylineno, yytext);}
+[+-]?{num}+\.({num}+)? { fprintf(output_file, "Line No. %d FLOATING POINT - %s\n", yylineno, yytext);}
 ([ \t\n])+ ; 
+"[" { fprintf(output_file,"Line No. %d LEFT BRACKET - %s\n", yylineno, yytext); }
+"]" { fprintf(output_file,"Line No. %d RIGHT BRACKET - %s\n", yylineno, yytext); }
+"(" { fprintf(output_file,"Line No. %d LEFT PARENTHESIS - %s\n", yylineno, yytext); }
+")" { fprintf(output_file,"Line No. %d RIGHT PARENTHESIS - %s\n", yylineno, yytext); }
+"{" { fprintf(output_file,"Line No. %d LEFT BRACE - %s\n", yylineno, yytext); }
+"}" { fprintf(output_file,"Line No. %d RIGHT BRACE - %s\n", yylineno, yytext); }
+"," { fprintf(output_file,"Line No. %d COMMA - %s\n", yylineno, yytext); }
+";" { fprintf(output_file,"Line No. %d SEMICOLON - %s\n", yylineno, yytext); }
+. { 
+    if(yytext[0] == '#')
+		fprintf(output_file,"Line No. %d PREPROCESSOR ERROR - %s\n", yylineno, yytext);
+	else
+		fprintf(output_file,"Line No. %d ERROR ILLEGAL CHARACTER - %s\n", yylineno, yytext);
+    return 0;
+  }
 %%
 
 int yywrap() {
