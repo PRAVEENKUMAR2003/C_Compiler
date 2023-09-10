@@ -1,66 +1,42 @@
-// Optimized implementation of Bubble sort
-#include <stdbool.h>
+// C program to implement iterative Binary Search
 #include <stdio.h>
 
-/*
-void swap(int* xp, int* yp)
+// An iterative binary search function.
+int binarySearch(int arr[], int l, int r, int x)
 {
-	int temp = *xp;
-	*xp = *yp;
-	*yp = temp;
-}
-*/
+	while (l <= r) {
+		int m = l + (r - l) / 2;
 
-void swap(int* xp, int* yp)
-{
-	int temp = *xp;
-	*xp = *yp;
-	*yp = temp;
-}
+		// Check if x is present at mid
+		if (arr[m] == x)
+			return m;
 
-// An optimized version of Bubble Sort
-void bubbleSort(int arr[], int n)
-{
-	int i, j;
-	bool swapped;
-	for (i = 0; i < n - 1; i++) {
-		swapped = false;
-		for (j = 0; j < n - i - 1; j++) {
-			if (arr[j] > arr[j + 1]) {
-				swap(&arr[j], &arr[j + 1]);
-				swapped = true;
-			}
-		}
+		// If x greater, ignore left half
+		if (arr[m] < x)
+			l = m + 1;
 
-		// If no two elements were swapped by inner loop,
-		// then break
-		if (swapped == false)
-			break;
+		// If x is smaller, ignore right half
+		else
+			r = m - 1;
 	}
-	int f = 034534, dfff = 0x31413, bi=0b10101010;
-	char bb[] = "sadfgasgf";
-	char a = 'd';
-	char asas = 'd';
-	char bfsb[] = "sadfgasgf";
 
-	=>
+	// If we reach here, then element was not present
+	return -1;
 }
 
-// Function to print an array
-void printArray(int arr[], int size)
+// Driver code
+int main(void)
 {
-	int i;
-	for (i = 0; i < size; i++)
-		printf("%d ", arr[i]);
-}
-
-// Driver program to test above functions
-int main()
-{
-	int arr[] = { 64, 34, 25, 12, 22, 11, 90 };
+	int arr[] = { 2, 3, 4, 10, 40 };
 	int n = sizeof(arr) / sizeof(arr[0]);
-	bubbleSort(arr, n);
-	printf("Sorted array: \n");
-	printArray(arr, n);
+	int x = 10;
+	int result = binarySearch(arr, 0, n - 1, x);
+	(result == -1) ? printf("Element is not present"
+							" in array")
+				: printf("Element is present at "
+							"index %d",
+							result);
 	return 0;
 }
+
+1.3f
