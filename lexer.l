@@ -12,8 +12,8 @@ FILE *output_file;
 	int check_nested = 0;
 char buf[100];
 int ok = 0;
-symbol** symbol_table;
-constant** constant_table;
+symbol** symbol_table=symboltable();
+constant** constant_table=constanttable();
 %}
 
 
