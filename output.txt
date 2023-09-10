@@ -1,159 +1,74 @@
-Line No. 1 SINGLE LINE COMMENT - // C program to implement iterative Binary Search
-Line No. 2 HEADER - #include <stdio.h>
-Line No. 4 SINGLE LINE COMMENT - // An iterative binary search function.
-Line No. 5 KEYWORD - int
-Line No. 5 FUNCTION - binarySearch(
-Line No. 5 KEYWORD - int
-Line No. 5 IDENTIFIER - arr
-Line No. 5 LEFT BRACKET - [
-Line No. 5 RIGHT BRACKET - ]
-Line No. 5 COMMA - ,
-Line No. 5 KEYWORD - int
-Line No. 5 IDENTIFIER - l
-Line No. 5 COMMA - ,
-Line No. 5 KEYWORD - int
-Line No. 5 IDENTIFIER - r
-Line No. 5 COMMA - ,
-Line No. 5 KEYWORD - int
-Line No. 5 IDENTIFIER - x
-Line No. 5 RIGHT PARENTHESIS - )
+Line No. 1 HEADER - #include<stdio.h>
+Line No. 2 #define preprocessor directive- #define mod 1000000007 
+Line No. 3 KEYWORD - int
+Line No. 3 IDENTIFIER - add
+Line No. 3 LEFT PARENTHESIS - (
+Line No. 3 KEYWORD - int
+Line No. 3 IDENTIFIER - a
+Line No. 3 COMMA - ,
+Line No. 3 KEYWORD - int
+Line No. 3 IDENTIFIER - b
+Line No. 3 RIGHT PARENTHESIS - )
+Line No. 3 LEFT BRACE - {
+Line No. 4 KEYWORD - return
+Line No. 4 IDENTIFIER - a
+Line No. 4 OPERATOR - +
+Line No. 4 IDENTIFIER - b
+Line No. 4 SEMICOLON - ;
+Line No. 5 RIGHT BRACE - }
+Line No. 6 KEYWORD - int
+Line No. 6 KEYWORD - main
+Line No. 6 LEFT PARENTHESIS - (
+Line No. 6 RIGHT PARENTHESIS - )
 Line No. 6 LEFT BRACE - {
-Line No. 7 FUNCTION - while (
-Line No. 7 IDENTIFIER - l
-Line No. 7 OPERATOR - <=
-Line No. 7 IDENTIFIER - r
-Line No. 7 RIGHT PARENTHESIS - )
-Line No. 7 LEFT BRACE - {
+Line No. 7 KEYWORD - int
+Line No. 7 IDENTIFIER - a
+Line No. 7 SEMICOLON - ;
 Line No. 8 KEYWORD - int
-Line No. 8 IDENTIFIER - m
-Line No. 8 OPERATOR - =
-Line No. 8 IDENTIFIER - l
-Line No. 8 OPERATOR - +
-Line No. 8 LEFT PARENTHESIS - (
-Line No. 8 IDENTIFIER - r
-Line No. 8 OPERATOR - -
-Line No. 8 IDENTIFIER - l
-Line No. 8 RIGHT PARENTHESIS - )
-Line No. 8 OPERATOR - /
-Line No. 8 NUMBER - 2
+Line No. 8 IDENTIFIER - b
+Line No. 8 COMMA - ,
+Line No. 8 IDENTIFIER - c
 Line No. 8 SEMICOLON - ;
-Line No. 10 SINGLE LINE COMMENT - // Check if x is present at mid
-Line No. 11 FUNCTION - if (
-Line No. 11 IDENTIFIER - arr
-Line No. 11 LEFT BRACKET - [
-Line No. 11 IDENTIFIER - m
-Line No. 11 RIGHT BRACKET - ]
-Line No. 11 OPERATOR - ==
-Line No. 11 IDENTIFIER - x
+Line No. 9 IDENTIFIER - a
+Line No. 9 OPERATOR - =
+Line No. 9 NUMBER - 20
+Line No. 9 SEMICOLON - ;
+Line No. 10 IDENTIFIER - b
+Line No. 10 OPERATOR - =
+Line No. 10 IDENTIFIER - a
+Line No. 10 OPERATOR - +
+Line No. 10 IDENTIFIER - a
+Line No. 10 SEMICOLON - ;
+Line No. 11 IDENTIFIER - scanf
+Line No. 11 LEFT PARENTHESIS - (
+Line No. 11 STRING - "%d"
+Line No. 11 COMMA - ,
+Line No. 11 OPERATOR - &
+Line No. 11 IDENTIFIER - c
 Line No. 11 RIGHT PARENTHESIS - )
-Line No. 12 KEYWORD - return
-Line No. 12 IDENTIFIER - m
+Line No. 11 SEMICOLON - ;
+Line No. 11 SINGLE LINE COMMENT - // Harsh Shreyansh Khalid
+Line No. 12 IDENTIFIER - printf
+Line No. 12 LEFT PARENTHESIS - (
+Line No. 12 STRING - "a-%d b-%d c-%d"
+Line No. 12 COMMA - ,
+Line No. 12 IDENTIFIER - a
+Line No. 12 COMMA - ,
+Line No. 12 IDENTIFIER - b
+Line No. 12 COMMA - ,
+Line No. 12 IDENTIFIER - c
+Line No. 12 RIGHT PARENTHESIS - )
 Line No. 12 SEMICOLON - ;
-Line No. 14 SINGLE LINE COMMENT - // If x greater, ignore left half
-Line No. 15 FUNCTION - if (
-Line No. 15 IDENTIFIER - arr
-Line No. 15 LEFT BRACKET - [
-Line No. 15 IDENTIFIER - m
-Line No. 15 RIGHT BRACKET - ]
-Line No. 15 OPERATOR - <
-Line No. 15 IDENTIFIER - x
-Line No. 15 RIGHT PARENTHESIS - )
-Line No. 16 IDENTIFIER - l
-Line No. 16 OPERATOR - =
-Line No. 16 IDENTIFIER - m
-Line No. 16 OPERATOR - +
-Line No. 16 NUMBER - 1
-Line No. 16 SEMICOLON - ;
-Line No. 18 SINGLE LINE COMMENT - // If x is smaller, ignore right half
-Line No. 19 KEYWORD - else
-Line No. 20 IDENTIFIER - r
-Line No. 20 OPERATOR - =
-Line No. 20 IDENTIFIER - m
-Line No. 20 OPERATOR - -
-Line No. 20 NUMBER - 1
-Line No. 20 SEMICOLON - ;
-Line No. 21 RIGHT BRACE - }
-Line No. 23 SINGLE LINE COMMENT - // If we reach here, then element was not present
-Line No. 24 KEYWORD - return
-Line No. 24 OPERATOR - -
-Line No. 24 NUMBER - 1
-Line No. 24 SEMICOLON - ;
-Line No. 25 RIGHT BRACE - }
-Line No. 27 SINGLE LINE COMMENT - // Driver code
-Line No. 28 KEYWORD - int
-Line No. 28 FUNCTION - main(
-Line No. 28 KEYWORD - void
-Line No. 28 RIGHT PARENTHESIS - )
-Line No. 29 LEFT BRACE - {
-Line No. 30 KEYWORD - int
-Line No. 30 IDENTIFIER - arr
-Line No. 30 LEFT BRACKET - [
-Line No. 30 RIGHT BRACKET - ]
-Line No. 30 OPERATOR - =
-Line No. 30 LEFT BRACE - {
-Line No. 30 NUMBER - 2
-Line No. 30 COMMA - ,
-Line No. 30 NUMBER - 3
-Line No. 30 COMMA - ,
-Line No. 30 NUMBER - 4
-Line No. 30 COMMA - ,
-Line No. 30 NUMBER - 10
-Line No. 30 COMMA - ,
-Line No. 30 NUMBER - 40
-Line No. 30 RIGHT BRACE - }
-Line No. 30 SEMICOLON - ;
-Line No. 31 KEYWORD - int
-Line No. 31 IDENTIFIER - n
-Line No. 31 OPERATOR - =
-Line No. 31 FUNCTION - sizeof(
-Line No. 31 IDENTIFIER - arr
-Line No. 31 RIGHT PARENTHESIS - )
-Line No. 31 OPERATOR - /
-Line No. 31 FUNCTION - sizeof(
-Line No. 31 IDENTIFIER - arr
-Line No. 31 LEFT BRACKET - [
-Line No. 31 NUMBER - 0Line No. 31 RIGHT BRACKET - ]
-Line No. 31 RIGHT PARENTHESIS - )
-Line No. 31 SEMICOLON - ;
-Line No. 32 KEYWORD - int
-Line No. 32 IDENTIFIER - x
-Line No. 32 OPERATOR - =
-Line No. 32 NUMBER - 10
-Line No. 32 SEMICOLON - ;
-Line No. 33 KEYWORD - int
-Line No. 33 IDENTIFIER - result
-Line No. 33 OPERATOR - =
-Line No. 33 FUNCTION - binarySearch(
-Line No. 33 IDENTIFIER - arr
-Line No. 33 COMMA - ,
-Line No. 33 NUMBER - 0Line No. 33 COMMA - ,
-Line No. 33 IDENTIFIER - n
-Line No. 33 OPERATOR - -
-Line No. 33 NUMBER - 1
-Line No. 33 COMMA - ,
-Line No. 33 IDENTIFIER - x
-Line No. 33 RIGHT PARENTHESIS - )
-Line No. 33 SEMICOLON - ;
-Line No. 34 LEFT PARENTHESIS - (
-Line No. 34 IDENTIFIER - result
-Line No. 34 OPERATOR - ==
-Line No. 34 OPERATOR - -
-Line No. 34 NUMBER - 1
-Line No. 34 RIGHT PARENTHESIS - )
-Line No. 34 OPERATOR - ?
-Line No. 34 FUNCTION - printf(
-Line No. 34 STRING - "Element is not present"
-Line No. 35 STRING - " in array"
-Line No. 35 RIGHT PARENTHESIS - )
-Line No. 36 COMMA - :
-Line No. 36 FUNCTION - printf(
-Line No. 36 STRING - "Element is present at "
-Line No. 37 STRING - "index %d"
-Line No. 37 COMMA - ,
-Line No. 38 IDENTIFIER - result
-Line No. 38 RIGHT PARENTHESIS - )
-Line No. 38 SEMICOLON - ;
-Line No. 39 KEYWORD - return
-Line No. 39 NUMBER - 0Line No. 39 SEMICOLON - ;
-Line No. 40 RIGHT BRACE - }
-Line No. 42 NUMBER - 1.3f
+Line No. 13 KEYWORD - int
+Line No. 13 IDENTIFIER - ans
+Line No. 13 OPERATOR - =
+Line No. 13 IDENTIFIER - add
+Line No. 13 LEFT PARENTHESIS - (
+Line No. 13 IDENTIFIER - a
+Line No. 13 COMMA - ,
+Line No. 13 IDENTIFIER - b
+Line No. 13 RIGHT PARENTHESIS - )
+Line No. 13 SEMICOLON - ;
+Line No. 14 KEYWORD - return
+Line No. 14 NUMBER - 0Line No. 14 SEMICOLON - ;
+Line No. 15 RIGHT BRACE - }

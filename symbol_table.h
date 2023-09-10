@@ -83,13 +83,13 @@ void variable_sym_add(symbol** sym_hash_table,char a[],int lineno)
 }
 void print_table(symbol** sym_hash_table)
 {
- printf("\nName  Type  Length  LineDef  Scope\n");
+ printf("\nName\t\tType\tLength\tLineDef\tScope\n");
  for(int i=0;i<sym_mod;i++)
  {
     symbol* cur=sym_hash_table[i];
     while(cur!=NULL)
     {
-     printf("%s  %s  %d  %d  %s\n",cur->name,cur->type,cur->length,cur->line_def,cur->scope);  
+     printf("%s\t\t%s\t%d\t%d\t%s\n",cur->name,cur->type,cur->length,cur->line_def,cur->scope);  
      cur=cur->next;
     }
  }

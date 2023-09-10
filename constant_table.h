@@ -110,13 +110,13 @@ void hexadecimal_add(constant** hash_table,char a[])
 
 void print_const_table(constant** hash_table)
 {
- printf("\nName  Type  Length  LineDef  Scope\n");
+ printf("\nName\tType\tLength\tLineDef\tScope\n");
  for(int i=0;i<mod;i++)
  {
     constant* cur=hash_table[i];
     while(cur!=NULL)
     {
-     printf("%s  %s \n",cur->name,cur->type);  
+     printf("%s\t%s \n",cur->name,cur->type);  
      cur=cur->next;
     }
  }

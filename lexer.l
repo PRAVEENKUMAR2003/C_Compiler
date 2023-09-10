@@ -1,11 +1,8 @@
 %option yylineno
 %{
 #include <stdio.h>
-<<<<<<< HEAD
 #include <string.h>
 #include <stdlib.h>
-=======
->>>>>>> 53b9ac5cdafaf08d19719e47a5de08f5bea17b7e
 #include "symbol_table.h"
 #include "constant_table.h"
 int cnt_ln = 1; 
@@ -57,9 +54,9 @@ ws  				[ \t\r\f\v]+
 <DFA_ML>\n ;
 <DFA_ML><<EOF>> { fprintf(output_file, "Line No. %d ERROR: MULTI LINE COMMENT NOT CLOSED\n", yylineno); return 0;}
 #include[ ]*[/"<]{alpha}+\.h[/">]   { fprintf(output_file, "Line No. %d HEADER - %s\n", yylineno, yytext);}
-("\"")[^\n\"]*("\"") { fprintf(output_file, "Line No. %d STRING - %s\n", yylineno, yytext);}
+("\"")[^\n\"]*("\"") { add(constant_table, yytext, "String");fprintf(output_file, "Line No. %d STRING - %s\n", yylineno, yytext);}
 ("\"")[^\n\"]* { fprintf(output_file, "Line No. %d ERROR: UNCLOSED STRING - %s\n", yylineno, yytext); return 0;}
-("\'")(("\\"({escape_sequences}))|.)("\'") { fprintf(output_file, "Line No. %d CHARACTER - %s\n", yylineno, yytext);}
+("\'")(("\\"({escape_sequences}))|.)("\'") { add(constant_table, yytext, "Char"); fprintf(output_file, "Line No. %d CHARACTER - %s\n", yylineno, yytext);}
 ("\'")(((("\\")[^0abfnrtv\\\"\'][^\n\']*))|[^\n\''][^\n\'']+)("\'") { fprintf(output_file, "Line No. %d ERROR: NOT A CHARACTER - %s\n", yylineno, yytext); return 0;}						 
 {keyword} { fprintf(output_file, "Line No. %d KEYWORD - %s\n", yylineno, yytext);}
 0[bB][01]+[uU]?[lL]{0,2} {add(constant_table, yytext, "binary constant"); fprintf(output_file, "Line No. %d Binary - %s\n", yylineno, yytext);}
@@ -96,13 +93,16 @@ ws  				[ \t\r\f\v]+
 "?" {add(constant_table, buf, "integer constant"); if (!ok)fprintf(output_file, "\n"); fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); ok=0;BEGIN INITIAL;}
 ([ \t\n])+ {add(constant_table, buf, "integer constant"); if (!ok)fprintf(output_file, "\n");ok=0;BEGIN INITIAL;} 
 ")" {add(constant_table, buf, "integer constant"); if (!ok)fprintf(output_file, "\n"); fprintf(output_file,"Line No. %d RIGHT PARENTHESIS - %s\n", yylineno, yytext); ok=0;BEGIN INITIAL;}
+"]" {add(constant_table, buf, "integer constant"); if (!ok)fprintf(output_file, "\n"); fprintf(output_file,"Line No. %d RIGHT BRACKET - %s\n", yylineno, yytext); ok=0;BEGIN INITIAL;}
 "}" {add(constant_table, buf, "integer constant"); if (!ok)fprintf(output_file, "\n"); fprintf(output_file,"Line No. %d RIGHT BRACE - %s\n", yylineno, yytext); ok=0;BEGIN INITIAL;}
 "," {add(constant_table, buf, "integer constant"); if (!ok)fprintf(output_file, "\n"); fprintf(output_file,"Line No. %d COMMA - %s\n", yylineno, yytext); ok=0;BEGIN INITIAL;}
 ":" {add(constant_table, buf, "integer constant"); if (!ok)fprintf(output_file, "\n"); fprintf(output_file,"Line No. %d COMMA - %s\n", yylineno, yytext); ok=0;BEGIN INITIAL;}
 [;] {add(constant_table, buf, "integer constant"); if (!ok)fprintf(output_file, "\n"); fprintf(output_file,"Line No. %d SEMICOLON - %s\n", yylineno, yytext); ok=0;BEGIN INITIAL; }
 . { fprintf(output_file, "\nLine No. %d NUMBER ERROR!!!! - %s\n", yylineno, yytext); return 0;}
 }
+ /*
 ((_|{alpha})({alphanum}|_)*)[ ]*[(]	{sym_add(symbol_table, yytext, yylineno, "function"); fprintf(output_file, "Line No. %d FUNCTION - %s\n", yylineno, yytext);}
+    */
 (_|{alpha})({alphanum}|_)* {sym_add(symbol_table, yytext, yylineno, "identifier"); fprintf(output_file, "Line No. %d IDENTIFIER - %s\n", yylineno, yytext);}
 "&&" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext);}
 "+"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); }
@@ -128,7 +128,7 @@ ws  				[ \t\r\f\v]+
 "==" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); }
 "!=" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); }
 "?" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); }
-":" { fprintf(output_file,"Line No. %d COMMA - %s\n", yylineno, yytext); }
+":" { fprintf(output_file,"Line No. %d COLON - %s\n", yylineno, yytext); }
 "[" { fprintf(output_file,"Line No. %d LEFT BRACKET - %s\n", yylineno, yytext); }
 "]" { fprintf(output_file,"Line No. %d RIGHT BRACKET - %s\n", yylineno, yytext); }
 "(" { fprintf(output_file,"Line No. %d LEFT PARENTHESIS - %s\n", yylineno, yytext); }
@@ -137,6 +137,7 @@ ws  				[ \t\r\f\v]+
 "}" { fprintf(output_file,"Line No. %d RIGHT BRACE - %s\n", yylineno, yytext); }
 "," { fprintf(output_file,"Line No. %d COMMA - %s\n", yylineno, yytext); }
 ";" { fprintf(output_file,"Line No. %d SEMICOLON - %s\n", yylineno, yytext); }
+#define[ \t]+[a-zA-Z_][a-zA-Z0-9_]*[ \t]+.* { fprintf(output_file,"Line No. %d #define preprocessor directive- %s\n", yylineno, yytext); }
 ([ \t\n])+ ; 
 . { 
     if(yytext[0] == '#')
@@ -179,5 +180,6 @@ int main(int argc, char *argv[]) {
     print_const_table(constant_table);
     fclose(input_file);
     fclose(output_file);
+    printf("Scanned Successfully\n");
     return 0;
 }
