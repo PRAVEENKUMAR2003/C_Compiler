@@ -1,8 +1,11 @@
 %option yylineno
 %{
 #include <stdio.h>
+<<<<<<< HEAD
 #include <string.h>
 #include <stdlib.h>
+=======
+>>>>>>> 53b9ac5cdafaf08d19719e47a5de08f5bea17b7e
 #include "symbol_table.h"
 #include "constant_table.h"
 int cnt_ln = 1; 
