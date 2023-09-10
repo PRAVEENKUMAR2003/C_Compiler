@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int mod=1001;
+int sym_mod=1001;
 
 typedef struct symbol 
 {
@@ -20,26 +20,26 @@ typedef struct symbol
 
 symbol** symboltable()
 {
- symbol** hash_table;
- hash_table=(symbol**) malloc(sizeof(symbol*)*mod);
- for(int i=0;i<mod;i++)
+ symbol** sym_hash_table;
+ sym_hash_table=(symbol**) malloc(sizeof(symbol*)*sym_mod);
+ for(int i=0;i<sym_mod;i++)
  {
-        hash_table[i]=NULL;
+        sym_hash_table[i]=NULL;
  }
- return hash_table;
+ return sym_hash_table;
 }
 
-int hash(char* s)
+int sym_hash(char* s)
 {
  int e=0;
  for(int i=0;i<strlen(s);i++)
  {
    e+=s[i];
  }
- return e%mod;
+ return e%sym_mod;
 }
 
-int check_if_present(symbol* d,char t[])
+int sym_check_if_present(symbol* d,char t[])
 {
  while(d!=NULL)
  {
@@ -50,10 +50,10 @@ int check_if_present(symbol* d,char t[])
  }
  return 0;
 }
-void add(symbol** hash_table,char a[],int lineno,char type[])
+void sym_add(symbol** sym_hash_table,char a[],int lineno,char type[])
 {
-   int y=hash(a);
-   if(check_if_present(hash_table[y],a)==0)
+   int y=sym_hash(a);
+   if(sym_check_if_present(sym_hash_table[y],a)==0)
    {
      symbol* newvar;
      newvar=(symbol*)malloc(sizeof(symbol));
@@ -62,31 +62,31 @@ void add(symbol** hash_table,char a[],int lineno,char type[])
      strcpy(newvar->type,type);
      strcpy(newvar->scope,"NULL");
      newvar->length=strlen(a);
-     if(hash_table[y]!=NULL)
+     if(sym_hash_table[y]!=NULL)
      {
-      newvar->next=hash_table[y];
+      newvar->next=sym_hash_table[y];
      }
      else
      {
        newvar->next=NULL;  
      }
-     hash_table[y]=newvar;
+     sym_hash_table[y]=newvar;
     }
 }
-void function_add(symbol** hash_table,char a[],int lineno)
+void function_sym_add(symbol** sym_hash_table,char a[],int lineno)
 {
-  add(hash_table,a,lineno,"function");
+  sym_add(sym_hash_table,a,lineno,"function");
 }
-void variable_add(symbol** hash_table,char a[],int lineno)
+void variable_sym_add(symbol** sym_hash_table,char a[],int lineno)
 {
-   add(hash_table,a,lineno,"identifier");
+   sym_add(sym_hash_table,a,lineno,"identifier");
 }
-void print_table(symbol** hash_table)
+void print_table(symbol** sym_hash_table)
 {
  printf("\nName  Type  Length  LineDef  Scope\n");
- for(int i=0;i<mod;i++)
+ for(int i=0;i<sym_mod;i++)
  {
-    symbol* cur=hash_table[i];
+    symbol* cur=sym_hash_table[i];
     while(cur!=NULL)
     {
      printf("%s  %s  %d  %d  %s\n",cur->name,cur->type,cur->length,cur->line_def,cur->scope);  

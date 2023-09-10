@@ -1,6 +1,8 @@
 %option yylineno
 %{
 #include <stdio.h>
+#include "symbol_table.h"
+#include "constant_table.h"
 int cnt_ln = 1; 
 FILE *output_file;
  FILE *input_file;

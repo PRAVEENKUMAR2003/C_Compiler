@@ -46,6 +46,7 @@ typedef int16_t flex_int16_t;
 typedef uint16_t flex_uint16_t;
 typedef int32_t flex_int32_t;
 typedef uint32_t flex_uint32_t;
+typedef uint64_t flex_uint64_t;
 #else
 typedef signed char flex_int8_t;
 typedef short int flex_int16_t;
@@ -154,7 +155,7 @@ typedef struct yy_buffer_state *YY_BUFFER_STATE;
 typedef size_t yy_size_t;
 #endif
 
-extern int yyleng;
+extern yy_size_t yyleng;
 
 extern FILE *yyin, *yyout;
 
@@ -171,7 +172,7 @@ extern FILE *yyin, *yyout;
      */
     #define  YY_LESS_LINENO(n) \
             do { \
-                int yyl;\
+                yy_size_t yyl;\
                 for ( yyl = n; yyl < yyleng; ++yyl )\
                     if ( yytext[yyl] == '\n' )\
                         --yylineno;\
@@ -216,7 +217,7 @@ struct yy_buffer_state
 	/* Number of characters read into yy_ch_buf, not including EOB
 	 * characters.
 	 */
-	int yy_n_chars;
+	yy_size_t yy_n_chars;
 
 	/* Whether we "own" the buffer - i.e., we know we created it,
 	 * and can realloc() it to grow it, and should free() it to
@@ -285,8 +286,8 @@ static YY_BUFFER_STATE * yy_buffer_stack = NULL; /**< Stack as an array. */
 
 /* yy_hold_char holds the character lost when yytext is formed. */
 static char yy_hold_char;
-static int yy_n_chars;		/* number of characters read into yy_ch_buf */
-int yyleng;
+static yy_size_t yy_n_chars;		/* number of characters read into yy_ch_buf */
+yy_size_t yyleng;
 
 /* Points to current character in buffer. */
 static char *yy_c_buf_p = NULL;
@@ -313,7 +314,7 @@ static void yy_init_buffer ( YY_BUFFER_STATE b, FILE *file  );
 
 YY_BUFFER_STATE yy_scan_buffer ( char *base, yy_size_t size  );
 YY_BUFFER_STATE yy_scan_string ( const char *yy_str  );
-YY_BUFFER_STATE yy_scan_bytes ( const char *bytes, int len  );
+YY_BUFFER_STATE yy_scan_bytes ( const char *bytes, yy_size_t len  );
 
 void *yyalloc ( yy_size_t  );
 void *yyrealloc ( void *, yy_size_t  );
@@ -366,7 +367,7 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
  */
 #define YY_DO_BEFORE_ACTION \
 	(yytext_ptr) = yy_bp; \
-	yyleng = (int) (yy_cp - yy_bp); \
+	yyleng = (yy_size_t) (yy_cp - yy_bp); \
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
@@ -622,15 +623,17 @@ char *yytext;
 #line 1 "lexer.l"
 #line 3 "lexer.l"
 #include <stdio.h>
+#include "symbol_table.h"
+#include "constant_table.h"
 int cnt_ln = 1; 
 FILE *output_file;
  FILE *input_file;
 	int nested_count = 0;
 	int check_nested = 0;
-#line 630 "lex.yy.c"
+#line 633 "lex.yy.c"
 /* Regular definitions */
 
-#line 633 "lex.yy.c"
+#line 636 "lex.yy.c"
 
 #define INITIAL 0
 #define DFA_ML 1
@@ -670,7 +673,7 @@ FILE *yyget_out ( void );
 
 void yyset_out  ( FILE * _out_str  );
 
-			int yyget_leng ( void );
+			yy_size_t yyget_leng ( void );
 
 char *yyget_text ( void );
 
@@ -739,7 +742,7 @@ static int input ( void );
 	if ( YY_CURRENT_BUFFER_LVALUE->yy_is_interactive ) \
 		{ \
 		int c = '*'; \
-		int n; \
+		yy_size_t n; \
 		for ( n = 0; n < max_size && \
 			     (c = getc( yyin )) != EOF && c != '\n'; ++n ) \
 			buf[n] = (char) c; \
@@ -848,9 +851,9 @@ YY_DECL
 		}
 
 	{
-#line 24 "lexer.l"
+#line 26 "lexer.l"
 
-#line 853 "lex.yy.c"
+#line 856 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -898,7 +901,7 @@ yy_find_action:
 
 		if ( yy_act != YY_END_OF_BUFFER && yy_rule_can_match_eol[yy_act] )
 			{
-			int yyl;
+			yy_size_t yyl;
 			for ( yyl = 0; yyl < yyleng; ++yyl )
 				if ( yytext[yyl] == '\n' )
 					
@@ -919,22 +922,22 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 25 "lexer.l"
+#line 27 "lexer.l"
 { fprintf(output_file, "Line No. %d SINGLE LINE COMMENT - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 26 "lexer.l"
+#line 28 "lexer.l"
 { BEGIN DFA_ML; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 27 "lexer.l"
+#line 29 "lexer.l"
 { ++nested_count; check_nested = 1;}	
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 28 "lexer.l"
+#line 30 "lexer.l"
 {
                         if (nested_count) --nested_count;
                         else{ 
@@ -952,289 +955,289 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 42 "lexer.l"
+#line 44 "lexer.l"
 ;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 43 "lexer.l"
+#line 45 "lexer.l"
 ;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 44 "lexer.l"
+#line 46 "lexer.l"
 ;
 	YY_BREAK
 case 8:
 /* rule 8 can match eol */
 YY_RULE_SETUP
-#line 45 "lexer.l"
+#line 47 "lexer.l"
 ;
 	YY_BREAK
 case YY_STATE_EOF(DFA_ML):
-#line 46 "lexer.l"
+#line 48 "lexer.l"
 { fprintf(output_file, "Line No. %d ERROR: MULTI LINE COMMENT NOT CLOSED\n", yylineno); return 0;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 47 "lexer.l"
+#line 49 "lexer.l"
 { fprintf(output_file, "Line No. %d HEADER - %s\n", yylineno, yytext);}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 48 "lexer.l"
+#line 50 "lexer.l"
 { fprintf(output_file, "Line No. %d STRING - %s\n", yylineno, yytext);}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 49 "lexer.l"
+#line 51 "lexer.l"
 { fprintf(output_file, "Line No. %d ERROR: UNCLOSED STRING - %s\n", yylineno, yytext); return 0;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 50 "lexer.l"
+#line 52 "lexer.l"
 { fprintf(output_file, "Line No. %d CHARACTER - %s\n", yylineno, yytext);}
 	YY_BREAK
 case 13:
 /* rule 13 can match eol */
 YY_RULE_SETUP
-#line 51 "lexer.l"
+#line 53 "lexer.l"
 { fprintf(output_file, "Line No. %d ERROR: NOT A CHARACTER - %s\n", yylineno, yytext); return 0;}						 
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 52 "lexer.l"
+#line 54 "lexer.l"
 { fprintf(output_file, "Line No. %d KEYWORD - %s\n", yylineno, yytext);}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 53 "lexer.l"
+#line 55 "lexer.l"
 { fprintf(output_file, "Line No. %d Binary - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 54 "lexer.l"
+#line 56 "lexer.l"
 { fprintf(output_file, "Line No. %d Octal - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 55 "lexer.l"
+#line 57 "lexer.l"
 { fprintf(output_file, "Line No. %d Hexadecimal - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 56 "lexer.l"
+#line 58 "lexer.l"
 { fprintf(output_file, "Line No. %d Float - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 57 "lexer.l"
+#line 59 "lexer.l"
 { fprintf(output_file, "Line No. %d Float - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 58 "lexer.l"
+#line 60 "lexer.l"
 { fprintf(output_file, "Line No. %d Float - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 59 "lexer.l"
+#line 61 "lexer.l"
 { fprintf(output_file, "Line No. %d Integer - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 60 "lexer.l"
+#line 62 "lexer.l"
 { fprintf(output_file, "Line No. %d Integer - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 61 "lexer.l"
+#line 63 "lexer.l"
 { fprintf(output_file, "Line No. %d Integer - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 62 "lexer.l"
+#line 64 "lexer.l"
 { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext);}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 63 "lexer.l"
+#line 65 "lexer.l"
 { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 64 "lexer.l"
+#line 66 "lexer.l"
 { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 65 "lexer.l"
+#line 67 "lexer.l"
 { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 66 "lexer.l"
+#line 68 "lexer.l"
 { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 67 "lexer.l"
+#line 69 "lexer.l"
 { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 68 "lexer.l"
+#line 70 "lexer.l"
 { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 69 "lexer.l"
+#line 71 "lexer.l"
 { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 70 "lexer.l"
+#line 72 "lexer.l"
 { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 71 "lexer.l"
+#line 73 "lexer.l"
 { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 72 "lexer.l"
+#line 74 "lexer.l"
 { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 73 "lexer.l"
+#line 75 "lexer.l"
 { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 74 "lexer.l"
+#line 76 "lexer.l"
 { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 75 "lexer.l"
+#line 77 "lexer.l"
 { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 76 "lexer.l"
+#line 78 "lexer.l"
 { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 77 "lexer.l"
+#line 79 "lexer.l"
 { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 78 "lexer.l"
+#line 80 "lexer.l"
 { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 79 "lexer.l"
+#line 81 "lexer.l"
 { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 80 "lexer.l"
+#line 82 "lexer.l"
 { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 81 "lexer.l"
+#line 83 "lexer.l"
 { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 82 "lexer.l"
+#line 84 "lexer.l"
 { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 83 "lexer.l"
+#line 85 "lexer.l"
 { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 84 "lexer.l"
+#line 86 "lexer.l"
 { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 85 "lexer.l"
+#line 87 "lexer.l"
 { fprintf(output_file, "Line No. %d FUNCTION - %s\n", yylineno, yytext);}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 86 "lexer.l"
+#line 88 "lexer.l"
 { fprintf(output_file, "Line No. %d IDENTIFIER - %s\n", yylineno, yytext);}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 87 "lexer.l"
+#line 89 "lexer.l"
 { fprintf(output_file, "Line No. %d INTEGER - %s\n", yylineno, yytext);}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 88 "lexer.l"
+#line 90 "lexer.l"
 { fprintf(output_file, "Line No. %d FLOATING POINT - %s\n", yylineno, yytext);}
 	YY_BREAK
 case 51:
 /* rule 51 can match eol */
 YY_RULE_SETUP
-#line 89 "lexer.l"
+#line 91 "lexer.l"
 ; 
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 90 "lexer.l"
+#line 92 "lexer.l"
 { fprintf(output_file,"Line No. %d LEFT BRACKET - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 91 "lexer.l"
+#line 93 "lexer.l"
 { fprintf(output_file,"Line No. %d RIGHT BRACKET - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 92 "lexer.l"
+#line 94 "lexer.l"
 { fprintf(output_file,"Line No. %d LEFT PARENTHESIS - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 93 "lexer.l"
+#line 95 "lexer.l"
 { fprintf(output_file,"Line No. %d RIGHT PARENTHESIS - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 94 "lexer.l"
+#line 96 "lexer.l"
 { fprintf(output_file,"Line No. %d LEFT BRACE - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 95 "lexer.l"
+#line 97 "lexer.l"
 { fprintf(output_file,"Line No. %d RIGHT BRACE - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 96 "lexer.l"
+#line 98 "lexer.l"
 { fprintf(output_file,"Line No. %d COMMA - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 97 "lexer.l"
+#line 99 "lexer.l"
 { fprintf(output_file,"Line No. %d SEMICOLON - %s\n", yylineno, yytext); }
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 98 "lexer.l"
+#line 100 "lexer.l"
 { 
     if(yytext[0] == '#')
 		fprintf(output_file,"Line No. %d PREPROCESSOR ERROR - %s\n", yylineno, yytext);
@@ -1245,10 +1248,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 105 "lexer.l"
+#line 107 "lexer.l"
 ECHO;
 	YY_BREAK
-#line 1251 "lex.yy.c"
+#line 1254 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1435,7 +1438,7 @@ static int yy_get_next_buffer (void)
 
 	else
 		{
-			int num_to_read =
+			yy_size_t num_to_read =
 			YY_CURRENT_BUFFER_LVALUE->yy_buf_size - number_to_move - 1;
 
 		while ( num_to_read <= 0 )
@@ -1449,7 +1452,7 @@ static int yy_get_next_buffer (void)
 
 			if ( b->yy_is_our_buffer )
 				{
-				int new_size = b->yy_buf_size * 2;
+				yy_size_t new_size = b->yy_buf_size * 2;
 
 				if ( new_size <= 0 )
 					b->yy_buf_size += b->yy_buf_size / 8;
@@ -1507,7 +1510,7 @@ static int yy_get_next_buffer (void)
 
 	if (((yy_n_chars) + number_to_move) > YY_CURRENT_BUFFER_LVALUE->yy_buf_size) {
 		/* Extend the array by 50%, plus the number we really need. */
-		int new_size = (yy_n_chars) + number_to_move + ((yy_n_chars) >> 1);
+		yy_size_t new_size = (yy_n_chars) + number_to_move + ((yy_n_chars) >> 1);
 		YY_CURRENT_BUFFER_LVALUE->yy_ch_buf = (char *) yyrealloc(
 			(void *) YY_CURRENT_BUFFER_LVALUE->yy_ch_buf, (yy_size_t) new_size  );
 		if ( ! YY_CURRENT_BUFFER_LVALUE->yy_ch_buf )
@@ -1596,7 +1599,7 @@ static int yy_get_next_buffer (void)
 	if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
 		{ /* need to shift things up to make room */
 		/* +2 for EOB chars. */
-		int number_to_move = (yy_n_chars) + 2;
+		yy_size_t number_to_move = (yy_n_chars) + 2;
 		char *dest = &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[
 					YY_CURRENT_BUFFER_LVALUE->yy_buf_size + 2];
 		char *source =
@@ -1651,7 +1654,7 @@ static int yy_get_next_buffer (void)
 
 		else
 			{ /* need more input */
-			int offset = (int) ((yy_c_buf_p) - (yytext_ptr));
+			yy_size_t offset = (yy_c_buf_p) - (yytext_ptr);
 			++(yy_c_buf_p);
 
 			switch ( yy_get_next_buffer(  ) )
@@ -2025,12 +2028,12 @@ YY_BUFFER_STATE yy_scan_string (const char * yystr )
  * 
  * @return the newly allocated buffer state object.
  */
-YY_BUFFER_STATE yy_scan_bytes  (const char * yybytes, int  _yybytes_len )
+YY_BUFFER_STATE yy_scan_bytes  (const char * yybytes, yy_size_t  _yybytes_len )
 {
 	YY_BUFFER_STATE b;
 	char *buf;
 	yy_size_t n;
-	int i;
+	yy_size_t i;
     
 	/* Get memory for full buffer, including space for trailing EOB's. */
 	n = (yy_size_t) (_yybytes_len + 2);
@@ -2072,7 +2075,7 @@ static void yynoreturn yy_fatal_error (const char* msg )
 	do \
 		{ \
 		/* Undo effects of setting up yytext. */ \
-        int yyless_macro_arg = (n); \
+        yy_size_t yyless_macro_arg = (n); \
         YY_LESS_LINENO(yyless_macro_arg);\
 		yytext[yyleng] = (yy_hold_char); \
 		(yy_c_buf_p) = yytext + yyless_macro_arg; \
@@ -2112,7 +2115,7 @@ FILE *yyget_out  (void)
 /** Get the length of the current token.
  * 
  */
-int yyget_leng  (void)
+yy_size_t yyget_leng  (void)
 {
         return yyleng;
 }
@@ -2265,7 +2268,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 105 "lexer.l"
+#line 107 "lexer.l"
 
 
 int yywrap() {
