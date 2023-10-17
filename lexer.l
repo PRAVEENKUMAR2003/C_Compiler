@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "symbol_table.h"
 #include "constant_table.h"
+#include "y.tab.h"
 int cnt_ln = 1; 
 FILE *output_file;
  FILE *input_file;
@@ -12,8 +13,8 @@ FILE *output_file;
 	int check_nested = 0;
 char buf[100];
 int ok = 0;
-symbol** symbol_table=symboltable();
-constant** constant_table=constanttable();
+symbol** symbol_table;
+constant** constant_table;
 %}
 
 
@@ -58,7 +59,27 @@ ws  				[ \t\r\f\v]+
 ("\"")[^\n\"]* { fprintf(output_file, "Line No. %d ERROR: UNCLOSED STRING - %s\n", yylineno, yytext); return 0;}
 ("\'")(("\\"({escape_sequences}))|.)("\'") { add(constant_table, yytext, "Char"); fprintf(output_file, "Line No. %d CHARACTER - %s\n", yylineno, yytext);}
 ("\'")(((("\\")[^0abfnrtv\\\"\'][^\n\']*))|[^\n\''][^\n\'']+)("\'") { fprintf(output_file, "Line No. %d ERROR: NOT A CHARACTER - %s\n", yylineno, yytext); return 0;}						 
-{keyword} { fprintf(output_file, "Line No. %d KEYWORD - %s\n", yylineno, yytext);}
+"int" { fprintf(output_file, "Line No. %d KEYWORD - %s\n", yylineno, yytext); return INT;}
+"float" { fprintf(output_file, "Line No. %d KEYWORD - %s\n", yylineno, yytext); return FLOAT;}
+"double" { fprintf(output_file, "Line No. %d KEYWORD - %s\n", yylineno, yytext); return DOUBLE;}
+"long" { fprintf(output_file, "Line No. %d KEYWORD - %s\n", yylineno, yytext); return LONG;}
+"short" { fprintf(output_file, "Line No. %d KEYWORD - %s\n", yylineno, yytext); return SHORT;}
+"signed" { fprintf(output_file, "Line No. %d KEYWORD - %s\n", yylineno, yytext); return SIGNED;}
+"unsigned" { fprintf(output_file, "Line No. %d KEYWORD - %s\n", yylineno, yytext); return UNSIGNED;}
+"struct" { fprintf(output_file, "Line No. %d KEYWORD - %s\n", yylineno, yytext); return STRUCT;}
+"if" { fprintf(output_file, "Line No. %d KEYWORD - %s\n", yylineno, yytext); return IF;}
+"while" { fprintf(output_file, "Line No. %d KEYWORD - %s\n", yylineno, yytext); return WHILE;}
+"return" { fprintf(output_file, "Line No. %d KEYWORD - %s\n", yylineno, yytext); return RETURN;}
+"do" { fprintf(output_file, "Line No. %d KEYWORD - %s\n", yylineno, yytext); return DO;}
+"for" { fprintf(output_file, "Line No. %d KEYWORD - %s\n", yylineno, yytext); return FOR;}
+"else" { fprintf(output_file, "Line No. %d KEYWORD - %s\n", yylineno, yytext); return ELSE;}
+"break" { fprintf(output_file, "Line No. %d KEYWORD - %s\n", yylineno, yytext); return BREAK;}
+"switch" { fprintf(output_file, "Line No. %d KEYWORD - %s\n", yylineno, yytext); return SWITCH;}
+"default" { fprintf(output_file, "Line No. %d KEYWORD - %s\n", yylineno, yytext); return DEFAULT;}
+"continue" { fprintf(output_file, "Line No. %d KEYWORD - %s\n", yylineno, yytext); return CONTINUE;}
+"goto" { fprintf(output_file, "Line No. %d KEYWORD - %s\n", yylineno, yytext); return GOTO;}
+
+
 0[bB][01]+[uU]?[lL]{0,2} {add(constant_table, yytext, "binary constant"); fprintf(output_file, "Line No. %d Binary - %s\n", yylineno, yytext);}
 0[0-7]+[uU]?[lL]{0,2} {add(constant_table, yytext, "octal constant"); fprintf(output_file, "Line No. %d Octal - %s\n", yylineno, yytext);}
 0[xX][A-Fa-f0-9]+[uU]?[lL]{0,2} {add(constant_table, yytext, "hexadecimal constant"); fprintf(output_file, "Line No. %d Hexadecimal - %s\n", yylineno, yytext);}
@@ -103,40 +124,39 @@ ws  				[ \t\r\f\v]+
  /*
 ((_|{alpha})({alphanum}|_)*)[ ]*[(]	{sym_add(symbol_table, yytext, yylineno, "function"); fprintf(output_file, "Line No. %d FUNCTION - %s\n", yylineno, yytext);}
     */
-(_|{alpha})({alphanum}|_)* {sym_add(symbol_table, yytext, yylineno, "identifier"); fprintf(output_file, "Line No. %d IDENTIFIER - %s\n", yylineno, yytext);}
-"&&" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext);}
-"+"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); }
-"-"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); }
-"++" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); }
-"--" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); }
-"!"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); }
-"~"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); }
-"*"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); }
-"/"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); }
-"%"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); }
-">>" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); }
-"<<" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); }
-"&"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); }
-"^"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); }
-\| { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); }
-\|\| { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); }
-"="	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); }
-">"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); }
-"<"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); }
-">=" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); }
-"<=" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); }
-"==" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); }
-"!=" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); }
-"?" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); }
-":" { fprintf(output_file,"Line No. %d COLON - %s\n", yylineno, yytext); }
-"[" { fprintf(output_file,"Line No. %d LEFT BRACKET - %s\n", yylineno, yytext); }
-"]" { fprintf(output_file,"Line No. %d RIGHT BRACKET - %s\n", yylineno, yytext); }
-"(" { fprintf(output_file,"Line No. %d LEFT PARENTHESIS - %s\n", yylineno, yytext); }
-")" { fprintf(output_file,"Line No. %d RIGHT PARENTHESIS - %s\n", yylineno, yytext); }
-"{" { fprintf(output_file,"Line No. %d LEFT BRACE - %s\n", yylineno, yytext); }
-"}" { fprintf(output_file,"Line No. %d RIGHT BRACE - %s\n", yylineno, yytext); }
-"," { fprintf(output_file,"Line No. %d COMMA - %s\n", yylineno, yytext); }
-";" { fprintf(output_file,"Line No. %d SEMICOLON - %s\n", yylineno, yytext); }
+(_|{alpha})({alphanum}|_)* {sym_add(symbol_table, yytext, yylineno, "identifier"); fprintf(output_file, "Line No. %d IDENTIFIER - %s\n", yylineno, yytext); return identifer;}
+"&&" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext);return AND_AND;}
+"+"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); return *yytext; }
+"-"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); return *yytext;}
+"++" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); return INCREMENT;}
+"--" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); return DECREMENT;}
+"!"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); return NOT;}
+"~"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); return *yytext;}
+"*"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); return *yytext; }
+"/"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); return *yytext;}
+"%"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); return *yytext;}
+">>" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); return RIGHT_SHIFT;}
+"<<" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); return LEFT_SHIFT;}
+"&"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); return *yytext;}
+"^"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext);return *yytext; }
+\| { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); return *yytext;}
+\|\| { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); return OR_OR}
+"="	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); return *yytext; }
+">"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); return GREAT;}
+"<"	{ fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); return LESS; }
+">=" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext);return return GREAT_EQUAL; }
+"<=" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); return LESS_EQUAL;}
+"==" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); return EQUAL;}
+"!=" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); return NOT_EQUAL;}
+"?:" { fprintf(output_file, "Line No. %d OPERATOR - %s\n", yylineno,yytext); return *yytext;}
+"[" { fprintf(output_file,"Line No. %d LEFT BRACKET - %s\n", yylineno, yytext);return *yytext; }
+"]" { fprintf(output_file,"Line No. %d RIGHT BRACKET - %s\n", yylineno, yytext);return *yytext; }
+"(" { fprintf(output_file,"Line No. %d LEFT PARENTHESIS - %s\n", yylineno, yytext);return *yytext; }
+")" { fprintf(output_file,"Line No. %d RIGHT PARENTHESIS - %s\n", yylineno, yytext);return *yytext; }
+"{" { fprintf(output_file,"Line No. %d LEFT BRACE - %s\n", yylineno, yytext);return *yytext; }
+"}" { fprintf(output_file,"Line No. %d RIGHT BRACE - %s\n", yylineno, yytext);return *yytext; }
+"," { fprintf(output_file,"Line No. %d COMMA - %s\n", yylineno, yytext);return *yytext; }
+";" { fprintf(output_file,"Line No. %d SEMICOLON - %s\n", yylineno, yytext);return *yytext; }
 #define[ \t]+[a-zA-Z_][a-zA-Z0-9_]*[ \t]+.* { fprintf(output_file,"Line No. %d #define preprocessor directive- %s\n", yylineno, yytext); }
 ([ \t\n])+ ; 
 . { 

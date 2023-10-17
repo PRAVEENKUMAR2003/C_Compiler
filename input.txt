@@ -1,15 +1,1 @@
-#include<stdio.h>
-#define mod 1000000007 
-int add(int a,int b){
-    return a+b;
-}
-int main(){
-    int a;
-    int b,c;
-    a=20;
-    b=a+a;
-    scanf("%d",&c);// Harsh Shreyansh Khalid
-    printf("a-%d b-%d c-%d",a,b,c);
-    int ans=add(a,b);
-    return 0;
-}
+int a;
