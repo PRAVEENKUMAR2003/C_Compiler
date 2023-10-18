@@ -42,257 +42,269 @@
 %left INCREMENT DECREMENT 
 
 
-%start begin_parse
+%start head_parse
 
 %%
-begin_parse
-			: declarations {printf("valid syntax\n"); exit(0);};
-
-declarations
-			: declaration declarations 
-			|	
-			;
+head_parse
+    : declaration_list ;
+	
+declaration_list
+    : declaration declaration_list 
+    |	
+    ;
 
 declaration
-			: variable_dec 
-			| function_dec
-			| structure_dec;
+    : variable_declaration 
+    | function_declaration
+    | structure_declaration;
 
-structure_dec
-			: STRUCT identifier '{' structure_content  '}' ';';
+structure_declaration
+    : STRUCT identifier '{' structure_content  '}' ';';
 
-structure_content : variable_dec structure_content | ;
+structure_content : variable_declaration structure_content | ;
 
-variable_dec
-			: datatype variables ';' 
-			| structure_initialize;
+variable_declaration
+    : data_type variables ';' 
+    | structure_initialize;
 
 structure_initialize 
-			: STRUCT identifier variables;
+    : STRUCT identifier variables;
 
 variables
-			: identifier_name multiple_variables;
+    : identifier_name multiple_variables;
 
 multiple_variables
-			: ',' variables 
-			| ;
+    : ',' variables 
+    | ;
 
 identifier_name 
-			: identifier {printf("found identifier\n");} extended_identifier;
+    : identifier {printf("found identifier\n");} extended_identifier;
 
 extended_identifier : array_identifier | '=' expression ; 
 
 array_identifier
-			: '[' array_dims
-			| ;
+    : '[' array_dims
+    | ;
 
 array_dims
-			: integer_constant  ']' initilization
-			| ']' string_initilization;
+    : integer_constant  ']' initialization
+    | ']' string_initialization;
 
-initilization
-			: string_initilization
-			| array_initialization
-			| ;
+initialization
+    : string_initialization
+    | array_initialization
+    | ;
 
-string_initilization
-			: '='  string_constant ;
+string_initialization
+    : '='  string_constant ;
 
 array_initialization
-			: '=' '{' array_values '}';
+    : '=' '{' array_values '}';
 
 array_values
-			: integer_constant multiple_array_values;
+    : integer_constant multiple_array_values;
 
 multiple_array_values
-			: ',' array_values 
-			| ;
+    : ',' array_values 
+    | ;
 
 
-datatype 
-			: INT {printf("found int\n");}| CHAR | FLOAT | DOUBLE 
-			| LONG long_grammar 
-			| SHORT short_grammar
-			| UNSIGNED unsigned_grammar 
-			| SIGNED signed_grammar
-			| VOID ;
+pointer_data_type
+    : data_type '*' 
+    | STRUCT identifier '*';
+
+data_type 
+    : INT {printf("found int\n");}| CHAR | FLOAT | DOUBLE 
+    | LONG long_grammar 
+    | SHORT short_grammar
+    | UNSIGNED unsigned_grammar 
+    | SIGNED signed_grammar
+    | VOID ;
 
 unsigned_grammar 
-			: INT | LONG long_grammar | SHORT short_grammar | ;
+    : INT | LONG long_grammar | SHORT short_grammar | ;
 
 signed_grammar 
-			: INT | LONG long_grammar | SHORT short_grammar | ;
+    : INT | LONG long_grammar | SHORT short_grammar | ;
 
 long_grammar 
-			: INT | ;
+    : INT | ;
 
 short_grammar 
-			: INT | ;
+    : INT | ;
 
-function_dec
-			: function_datatype function_parameters;
+function_declaration
+    : function_data_type function_parameters;
 
-function_datatype
-			: datatype identifier '(' ;
+function_data_type
+    : data_type identifier '(' 
+    | pointer_data_type identifier '(' ;
 
 function_parameters
-			: parameters ')' statement;
+    : parameters ')' statement;
 
 parameters 
-			: datatype all_parameter_identifiers | ;
+    : data_type all_parameter_identifiers 
+    | STRUCT identifier all_parameter_identifiers
+    | pointer_data_type all_parameter_identifiers
+    | ;
 
 all_parameter_identifiers 
-			: parameter_identifier multiple_parameters;
+    : parameter_identifier multiple_parameters;
 
 multiple_parameters
-			: ',' parameters 
-			| ;
+    : ',' parameters 
+    | ;
 
 parameter_identifier 
-			: identifier extended_parameter;
+    : identifier extended_parameter;
 
 extended_parameter
-			: '[' ']'
-			| ;
+    : '[' ']'
+    | ;
 
 statement 
-			: expression_statment | multiple_statement 
-			| conditional_statements | iterative_statements 
-			| return_statement | break_statement 
-			| variable_dec;
+    : expression_statment | multiple_statement 
+    | conditional_statements | iterative_statements 
+    | return_statement | break_statement 
+    | variable_declaration;
 
 multiple_statement 
-			: '{' statments '}' ;
+    : '{' statements '}' ;
 
-statments 
-			: statement statments
-			| ;
+statements 
+    : statement statements
+    | ;
 
 expression_statment 
-			: expression ';' 
-			| ';' ;
+    : expression ';' 
+    | ';' ;
 
 conditional_statements 
-			: IF '(' simple_expression ')' statement extended_conditional_statements;
+    : IF '(' simple_expression ')' statement extended_conditional_statements;
 
 extended_conditional_statements
-			: ELSE statement
-			| ;
+    : ELSE statement
+    | ;
 
 iterative_statements 
-			: WHILE '(' simple_expression ')' statement 
-			| FOR '(' for_initialization simple_expression ';' expression ')' 
-			| DO statement WHILE '(' simple_expression ')' ';';
+    : WHILE '(' simple_expression ')' statement 
+    | FOR '(' for_initialization simple_expression ';' expression ')' 
+    | DO statement WHILE '(' simple_expression ')' ';';
 
 for_initialization
-			: variable_dec
-			| expression ';'
-			| ';' ;
+    : variable_declaration
+    | expression ';'
+    | ';' ;
 
 return_statement 
-			: RETURN return_suffix;
+    : RETURN return_suffix;
 
 return_suffix
-			: ';' 
-			| expression ';' ;
+    : ';' 
+    | expression ';' ;
 
 break_statement 
-			: BREAK ';' ;
+    : BREAK ';' ;
 
 expression 
-			: iden expressions
-			| simple_expression ;
+    : id expressions
+    | simple_expression ;
 
 expressions
-			: '=' expression 
-			| ADD_EQUAL expression 
-			| SUBTRACT_EQUAL expression 
-			| MULTIPLY_EQUAL expression 
-			| DIVIDE_EQUAL expression 
-			| MOD_EQUAL expression 
-			| INCREMENT 
-			| DECREMENT ;
+    : '=' expression 
+    | ADD_EQUAL expression 
+    | SUBTRACT_EQUAL expression 
+    | MULTIPLY_EQUAL expression 
+    | DIVIDE_EQUAL expression 
+    | MOD_EQUAL expression 
+    | INCREMENT 
+    | DECREMENT ;
 
 simple_expression 
-			: and_expression simple_expression_breakup;
+    : and_expression simple_expression_breakup;
 
 simple_expression_breakup 
-			: OR_OR and_expression simple_expression_breakup | ;
+    : OR_OR and_expression simple_expression_breakup | ;
 
 and_expression 
-			: unary_relation_expression and_expression_breakup;
+    : unary_relation_expression and_expression_breakup;
 
 and_expression_breakup
-			: AND_AND unary_relation_expression and_expression_breakup
-			| ;
+    : AND_AND unary_relation_expression and_expression_breakup
+    | ;
 
 unary_relation_expression 
-			: NOT unary_relation_expression 
-			| regular_expression ;
+    : NOT unary_relation_expression 
+    | regular_expression ;
 
 regular_expression 
-			: sum_expression regular_expression_breakup;
+    : sum_expression regular_expression_breakup;
 
 regular_expression_breakup
-			: relational_operators sum_expression 
-			| ;
+    : relational_operators sum_expression 
+    | ;
 
 relational_operators 
-			: GREAT_EQUAL
-			| LESS_EQUAL
-			| GREAT 
-			| LESS
-			| EQUAL
-			| NOT_EQUAL ;
+    : GREAT_EQUAL
+    | LESS_EQUAL
+    | GREAT 
+    | LESS
+    | EQUAL
+    | NOT_EQUAL ;
 
 sum_expression 
-			: sum_expression sum_operators term 
-			| term ;
+    : sum_expression sum_operators term 
+    | term ;
 
 sum_operators 
-			: '+' 
-			| '-' ;
+    : '+' 
+    | '-' ;
 
 term
-			: term multiply_operators factor 
-			| factor ;
+    : term multiply_operators factor 
+    | factor ;
 
 multiply_operators 
-			: '*' | '/' | '%' ;
+    : '*' | '/' | '%' ;
 
 factor 
-			: func | iden ;
+    : function | id ;
 
-iden 
-			: identifier 
-			| iden extended_iden;
+id 
+    : identifier 
+    | id extended_id;
 
-extended_iden
-			: '[' expression ']' 
-			| '.' identifier;
+extended_id
+    : '[' expression ']' 
+    | '.' identifier;
 
-func 
-			: '(' expression ')' 
-			| func_call | constant;
+function 
+    : '(' expression ')' 
+    | function_call | constant;
 
-func_call
-			: identifier '(' arguments ')';
+function_call
+    : identifier '(' arguments ')';
 
 arguments 
-			: arguments_list | ;
+    : arguments_list | ;
 
 arguments_list 
-			: expression extended_arguments;
+    : expression extended_arguments;
 
 extended_arguments
-			: ',' expression extended_arguments 
-			| ;
+    : ',' expression extended_arguments 
+    | ;
 
 constant 
-			: integer_constant 	 
-			| string_constant	 
-			| float_constant	 
-			| character_constant;
+    : integer_constant 	 
+    | string_constant	 
+    | float_constant	 
+    | character_constant
+	| exponent_constant
+	| octal_constant
+	| binary_constant
+	| hexadecimal_constant;
 
 %%
 
@@ -304,7 +316,7 @@ extern char *yytext;
 
 int main()
 {
-	yyin = fopen("test15.c", "r");
+	yyin = fopen("../test15.c", "r");
 	printf("entering the parsing phase\n");
 	int ok=yyparse();
 

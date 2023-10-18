@@ -64,11 +64,12 @@ ws                  [ \t\r\f\v]+
 <DFA_ML>\n ;
 <DFA_ML><<EOF>> { printf( "Line No. %d ERROR: MULTI LINE COMMENT NOT CLOSED\n", yylineno); return 0;}
 #include[ ]*[/"<]{alpha}+\.h[/">]   { printf( "Line No. %d HEADER - %s\n", yylineno, yytext);}
-("\"")[^\n\"]*("\"") { printf( "Line No. %d STRING - %s\n", yylineno, yytext);}
+("\"")[^\n\"]*("\"") { printf( "Line No. %d STRING - %s\n", yylineno, yytext);return string_constant;}
 ("\"")[^\n\"]* { printf( "Line No. %d ERROR: UNCLOSED STRING - %s\n", yylineno, yytext); return 0;}
 ("\'")(("\\"({escape_sequences}))|.)("\'") {  printf( "Line No. %d CHARACTER - %s\n", yylineno, yytext);}
 ("\'")(((("\\")[^0abfnrtv\\\"\'][^\n\']*))|[^\n\''][^\n\'']+)("\'") { printf( "Line No. %d ERROR: NOT A CHARACTER - %s\n", yylineno, yytext); return 0;}                        
 "int" { printf( "Line No. %d KEYWORD - %s\n", yylineno, yytext); return INT;}
+"void" { printf( "Line No. %d KEYWORD - %s\n", yylineno, yytext); return VOID;}
 "float" { printf( "Line No. %d KEYWORD - %s\n", yylineno, yytext); return FLOAT;}
 "double" { printf( "Line No. %d KEYWORD - %s\n", yylineno, yytext); return DOUBLE;}
 "long" { printf( "Line No. %d KEYWORD - %s\n", yylineno, yytext); return LONG;}
@@ -109,7 +110,7 @@ ws                  [ \t\r\f\v]+
 ((_|{alpha})({alphanum}|_)*)[ ]*[(] {sym_add(symbol_table, yytext, yylineno, "function"); printf( "Line No. %d FUNCTION - %s\n", yylineno, yytext);}
     */
 (_|{alpha})({alphanum}|_)* {printf( "Line No. %d IDENTIFIER - %s\n", yylineno, yytext); return identifier;}
-"&&" { printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext);return AND_AND;}
+
 "+" { printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext); return *yytext; }
 "-" { printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext); return *yytext;}
 "++" { printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext); return INCREMENT;}
@@ -132,6 +133,12 @@ ws                  [ \t\r\f\v]+
 "<=" { printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext); return LESS_EQUAL;}
 "==" { printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext); return EQUAL;}
 "!=" { printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext); return NOT_EQUAL;}
+"+=" {printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext);return ADD_EQUAL;}
+"-=" {printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext);return SUBTRACT_EQUAL;}
+"*=" {printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext);return MULTIPLY_EQUAL;}
+"/=" {printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext);return DIVIDE_EQUAL;}
+"%=" {printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext);return MOD_EQUAL;}
+"&&" {printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext);return AND_AND;}
 "?:" { printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext); return *yytext;}
 "[" { printf("Line No. %d LEFT BRACKET - %s\n", yylineno, yytext);return *yytext; }
 "]" { printf("Line No. %d RIGHT BRACKET - %s\n", yylineno, yytext);return *yytext; }
