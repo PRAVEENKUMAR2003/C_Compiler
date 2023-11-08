@@ -35,8 +35,8 @@
    especially those whose name start with YY_ or yy_.  They are
    private implementation details that can be changed or removed.  */
 
-#ifndef YY_YY_PARSER1_TAB_H_INCLUDED
-# define YY_YY_PARSER1_TAB_H_INCLUDED
+#ifndef YY_YY_PARSER2_TAB_H_INCLUDED
+# define YY_YY_PARSER2_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -70,42 +70,43 @@ extern int yydebug;
     SIGNED = 271,                  /* SIGNED  */
     UNSIGNED = 272,                /* UNSIGNED  */
     STRUCT = 273,                  /* STRUCT  */
-    RETURN = 274,                  /* RETURN  */
-    MAIN = 275,                    /* MAIN  */
-    BREAK = 276,                   /* BREAK  */
-    CONTINUE = 277,                /* CONTINUE  */
-    GOTO = 278,                    /* GOTO  */
-    ENDIF = 279,                   /* ENDIF  */
-    VOID = 280,                    /* VOID  */
-    identifier = 281,              /* identifier  */
-    integer_constant = 282,        /* integer_constant  */
-    string_constant = 283,         /* string_constant  */
-    float_constant = 284,          /* float_constant  */
-    character_constant = 285,      /* character_constant  */
-    binary_constant = 286,         /* binary_constant  */
-    hexadecimal_constant = 287,    /* hexadecimal_constant  */
-    exponent_constant = 288,       /* exponent_constant  */
-    octal_constant = 289,          /* octal_constant  */
-    LEFT_SHIFT = 290,              /* LEFT_SHIFT  */
-    RIGHT_SHIFT = 291,             /* RIGHT_SHIFT  */
-    ELSE = 292,                    /* ELSE  */
-    MOD_EQUAL = 293,               /* MOD_EQUAL  */
-    MULTIPLY_EQUAL = 294,          /* MULTIPLY_EQUAL  */
-    DIVIDE_EQUAL = 295,            /* DIVIDE_EQUAL  */
-    ADD_EQUAL = 296,               /* ADD_EQUAL  */
-    SUBTRACT_EQUAL = 297,          /* SUBTRACT_EQUAL  */
-    LOGICAL_OR = 298,              /* LOGICAL_OR  */
-    LOGICAL_AND = 299,             /* LOGICAL_AND  */
-    EQUAL = 300,                   /* EQUAL  */
-    NOT_EQUAL = 301,               /* NOT_EQUAL  */
-    LESS_EQUAL = 302,              /* LESS_EQUAL  */
-    LESS = 303,                    /* LESS  */
-    GREAT_EQUAL = 304,             /* GREAT_EQUAL  */
-    GREAT = 305,                   /* GREAT  */
-    SIZEOF = 306,                  /* SIZEOF  */
-    NOT = 307,                     /* NOT  */
-    INCREMENT = 308,               /* INCREMENT  */
-    DECREMENT = 309                /* DECREMENT  */
+    UNION = 274,                   /* UNION  */
+    RETURN = 275,                  /* RETURN  */
+    MAIN = 276,                    /* MAIN  */
+    BREAK = 277,                   /* BREAK  */
+    CONTINUE = 278,                /* CONTINUE  */
+    GOTO = 279,                    /* GOTO  */
+    ENDIF = 280,                   /* ENDIF  */
+    VOID = 281,                    /* VOID  */
+    identifier = 282,              /* identifier  */
+    integer_constant = 283,        /* integer_constant  */
+    string_constant = 284,         /* string_constant  */
+    float_constant = 285,          /* float_constant  */
+    character_constant = 286,      /* character_constant  */
+    binary_constant = 287,         /* binary_constant  */
+    hexadecimal_constant = 288,    /* hexadecimal_constant  */
+    exponent_constant = 289,       /* exponent_constant  */
+    octal_constant = 290,          /* octal_constant  */
+    LEFT_SHIFT = 291,              /* LEFT_SHIFT  */
+    RIGHT_SHIFT = 292,             /* RIGHT_SHIFT  */
+    ELSE = 293,                    /* ELSE  */
+    MOD_EQUAL = 294,               /* MOD_EQUAL  */
+    MULTIPLY_EQUAL = 295,          /* MULTIPLY_EQUAL  */
+    DIVIDE_EQUAL = 296,            /* DIVIDE_EQUAL  */
+    ADD_EQUAL = 297,               /* ADD_EQUAL  */
+    SUBTRACT_EQUAL = 298,          /* SUBTRACT_EQUAL  */
+    LOGICAL_OR = 299,              /* LOGICAL_OR  */
+    LOGICAL_AND = 300,             /* LOGICAL_AND  */
+    EQUAL = 301,                   /* EQUAL  */
+    NOT_EQUAL = 302,               /* NOT_EQUAL  */
+    LESS_EQUAL = 303,              /* LESS_EQUAL  */
+    LESS = 304,                    /* LESS  */
+    GREAT_EQUAL = 305,             /* GREAT_EQUAL  */
+    GREAT = 306,                   /* GREAT  */
+    SIZEOF = 307,                  /* SIZEOF  */
+    NOT = 308,                     /* NOT  */
+    INCREMENT = 309,               /* INCREMENT  */
+    DECREMENT = 310                /* DECREMENT  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -124,4 +125,4 @@ extern YYSTYPE yylval;
 int yyparse (void);
 
 
-#endif /* !YY_YY_PARSER1_TAB_H_INCLUDED  */
+#endif /* !YY_YY_PARSER2_TAB_H_INCLUDED  */

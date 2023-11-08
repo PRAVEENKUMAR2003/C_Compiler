@@ -1,0 +1,3394 @@
+Terminals unused in grammar
+
+    SWITCH
+    CASE
+    DEFAULT
+    MAIN
+    CONTINUE
+    GOTO
+    ENDIF
+    exponent_constant
+    LEFT_SHIFT
+    RIGHT_SHIFT
+    '^'
+    SIZEOF
+
+
+State 222 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: head_parse $end
+
+    1 head_parse: declarations
+
+    2 declarations: declaration declarations
+    3             | ε
+
+    4 declaration: variable_declaration
+    5            | function_declaration
+    6            | structure_declaration
+
+    7 structure_declaration: STRUCT identifier '{' structure_content '}' ';'
+
+    8 structure_content: variable_declaration structure_content
+    9                  | ε
+
+   10 variable_declaration: datatype variables ';'
+   11                     | structure_initialize
+
+   12 structure_initialize: STRUCT identifier variables ';'
+
+   13 variables: identifier_name multiple_variables
+
+   14 multiple_variables: ',' variables
+   15                   | ε
+
+   16 $@1: ε
+
+   17 identifier_name: identifier $@1 extended_identifier
+
+   18 extended_identifier: array_identifier
+   19                    | '=' expression
+
+   20 array_identifier: '[' array_dims
+   21                 | ε
+
+   22 array_dims: integer_constant ']' initilization
+   23           | ']' string_initilization
+
+   24 initilization: string_initilization
+   25              | array_initialization
+   26              | ε
+
+   27 string_initilization: '=' string_constant
+
+   28 array_initialization: '=' '{' array_values '}'
+
+   29 array_values: integer_constant multiple_array_values
+
+   30 multiple_array_values: ',' array_values
+   31                      | ε
+
+   32 pointer_datatype: datatype '*'
+   33                 | STRUCT identifier '*'
+
+   34 datatype: INT
+   35         | CHAR
+   36         | FLOAT
+   37         | DOUBLE
+   38         | LONG long_grammar
+   39         | SHORT short_grammar
+   40         | UNSIGNED unsigned_grammar
+   41         | SIGNED signed_grammar
+   42         | VOID
+
+   43 unsigned_grammar: INT
+   44                 | LONG long_grammar
+   45                 | SHORT short_grammar
+   46                 | ε
+
+   47 signed_grammar: INT
+   48               | LONG long_grammar
+   49               | SHORT short_grammar
+   50               | ε
+
+   51 long_grammar: INT
+   52             | ε
+
+   53 short_grammar: INT
+   54              | ε
+
+   55 function_declaration: function_datatype function_parameters
+
+   56 function_datatype: datatype identifier '('
+   57                  | pointer_datatype identifier '('
+
+   58 function_parameters: parameters ')' statement
+
+   59 parameters: datatype all_parameter_identifiers
+   60           | STRUCT identifier all_parameter_identifiers
+   61           | pointer_datatype all_parameter_identifiers
+   62           | ε
+
+   63 all_parameter_identifiers: parameter_identifier multiple_parameters
+
+   64 multiple_parameters: ',' parameters
+   65                    | ε
+
+   66 parameter_identifier: identifier extended_parameter
+
+   67 extended_parameter: '[' ']'
+   68                   | ε
+
+   69 statement: expression_statment
+   70          | multiple_statement
+   71          | conditional_statements
+   72          | iterative_statements
+   73          | return_statement
+   74          | break_statement
+   75          | variable_declaration
+
+   76 multiple_statement: '{' statements '}'
+
+   77 statements: statement statements
+   78           | ε
+
+   79 expression_statment: expression ';'
+   80                    | ';'
+
+   81 conditional_statements: IF '(' simple_expression ')' statement extended_conditional_statements
+
+   82 extended_conditional_statements: ELSE statement
+   83                                | ε
+
+   84 iterative_statements: WHILE '(' simple_expression ')' statement
+   85                     | FOR '(' for_initialization simple_expression ';' expression ')'
+   86                     | DO statement WHILE '(' simple_expression ')' ';'
+
+   87 for_initialization: variable_declaration
+   88                   | expression ';'
+   89                   | ';'
+
+   90 return_statement: RETURN return_element
+
+   91 return_element: ';'
+   92               | expression ';'
+
+   93 break_statement: BREAK ';'
+
+   94 expression: id expressions
+   95           | simple_expression
+
+   96 expressions: '=' expression
+   97            | ADD_EQUAL expression
+   98            | SUBTRACT_EQUAL expression
+   99            | MULTIPLY_EQUAL expression
+  100            | DIVIDE_EQUAL expression
+  101            | MOD_EQUAL expression
+  102            | INCREMENT
+  103            | DECREMENT
+
+  104 simple_expression: and_expression simple_expression_extend
+
+  105 simple_expression_extend: LOGICAL_OR and_expression simple_expression_extend
+  106                         | ε
+
+  107 and_expression: unary_relation_expression and_expression_extend
+
+  108 and_expression_extend: LOGICAL_AND unary_relation_expression and_expression_extend
+  109                      | ε
+
+  110 unary_relation_expression: NOT unary_relation_expression
+  111                          | regular_expression
+
+  112 regular_expression: sum_expression regular_expression_extend
+
+  113 regular_expression_extend: relational_operators sum_expression
+  114                          | ε
+
+  115 relational_operators: NOT_EQUAL
+  116                     | LESS_EQUAL
+  117                     | GREAT
+  118                     | LESS
+  119                     | EQUAL
+  120                     | GREAT_EQUAL
+
+  121 sum_expression: sum_expression sum_operators term
+  122               | term
+
+  123 sum_operators: '+'
+  124              | '-'
+
+  125 term: term multiply_operators factor
+  126     | factor
+
+  127 multiply_operators: '*'
+  128                   | '/'
+  129                   | '%'
+
+  130 factor: non_id
+  131       | id
+
+  132 id: identifier
+  133   | id extended_id
+
+  134 extended_id: '[' expression ']'
+  135            | '.' identifier
+
+  136 non_id: '(' expression ')'
+  137       | function_call
+  138       | constant
+
+  139 function_call: identifier '(' arguments ')'
+
+  140 arguments: arguments_list
+  141          | ε
+
+  142 arguments_list: expression extended_arguments
+
+  143 extended_arguments: ',' expression extended_arguments
+  144                   | ε
+
+  145 constant: integer_constant
+  146         | string_constant
+  147         | float_constant
+  148         | character_constant
+  149         | octal_constant
+  150         | hexadecimal_constant
+  151         | binary_constant
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    '%' (37) 129
+    '(' (40) 56 57 81 84 85 86 136 139
+    ')' (41) 58 81 84 85 86 136 139
+    '*' (42) 32 33 127
+    '+' (43) 123
+    ',' (44) 14 30 64 143
+    '-' (45) 124
+    '.' (46) 135
+    '/' (47) 128
+    ';' (59) 7 10 12 79 80 85 86 88 89 91 92 93
+    '=' (61) 19 27 28 96
+    '[' (91) 20 67 134
+    ']' (93) 22 23 67 134
+    '^' (94)
+    '{' (123) 7 28 76
+    '}' (125) 7 28 76
+    error (256)
+    IF (258) 81
+    WHILE (259) 84 86
+    FOR (260) 85
+    DO (261) 86
+    SWITCH (262)
+    CASE (263)
+    DEFAULT (264)
+    INT (265) 34 43 47 51 53
+    CHAR (266) 35
+    FLOAT (267) 36
+    DOUBLE (268) 37
+    LONG (269) 38 44 48
+    SHORT (270) 39 45 49
+    SIGNED (271) 41
+    UNSIGNED (272) 40
+    STRUCT (273) 7 12 33 60
+    RETURN (274) 90
+    MAIN (275)
+    BREAK (276) 93
+    CONTINUE (277)
+    GOTO (278)
+    ENDIF (279)
+    VOID (280) 42
+    identifier (281) 7 12 17 33 56 57 60 66 132 135 139
+    integer_constant (282) 22 29 145
+    string_constant (283) 27 146
+    float_constant (284) 147
+    character_constant (285) 148
+    binary_constant (286) 151
+    hexadecimal_constant (287) 150
+    exponent_constant (288)
+    octal_constant (289) 149
+    LEFT_SHIFT (290)
+    RIGHT_SHIFT (291)
+    ELSE (292) 82
+    MOD_EQUAL (293) 101
+    MULTIPLY_EQUAL (294) 99
+    DIVIDE_EQUAL (295) 100
+    ADD_EQUAL (296) 97
+    SUBTRACT_EQUAL (297) 98
+    LOGICAL_OR (298) 105
+    LOGICAL_AND (299) 108
+    EQUAL (300) 119
+    NOT_EQUAL (301) 115
+    LESS_EQUAL (302) 116
+    LESS (303) 118
+    GREAT_EQUAL (304) 120
+    GREAT (305) 117
+    SIZEOF (306)
+    NOT (307) 110
+    INCREMENT (308) 102
+    DECREMENT (309) 103
+
+
+Nonterminals, with rules where they appear
+
+    $accept (71)
+        on left: 0
+    head_parse (72)
+        on left: 1
+        on right: 0
+    declarations (73)
+        on left: 2 3
+        on right: 1 2
+    declaration (74)
+        on left: 4 5 6
+        on right: 2
+    structure_declaration (75)
+        on left: 7
+        on right: 6
+    structure_content (76)
+        on left: 8 9
+        on right: 7 8
+    variable_declaration (77)
+        on left: 10 11
+        on right: 4 8 75 87
+    structure_initialize (78)
+        on left: 12
+        on right: 11
+    variables (79)
+        on left: 13
+        on right: 10 12 14
+    multiple_variables (80)
+        on left: 14 15
+        on right: 13
+    identifier_name (81)
+        on left: 17
+        on right: 13
+    $@1 (82)
+        on left: 16
+        on right: 17
+    extended_identifier (83)
+        on left: 18 19
+        on right: 17
+    array_identifier (84)
+        on left: 20 21
+        on right: 18
+    array_dims (85)
+        on left: 22 23
+        on right: 20
+    initilization (86)
+        on left: 24 25 26
+        on right: 22
+    string_initilization (87)
+        on left: 27
+        on right: 23 24
+    array_initialization (88)
+        on left: 28
+        on right: 25
+    array_values (89)
+        on left: 29
+        on right: 28 30
+    multiple_array_values (90)
+        on left: 30 31
+        on right: 29
+    pointer_datatype (91)
+        on left: 32 33
+        on right: 57 61
+    datatype (92)
+        on left: 34 35 36 37 38 39 40 41 42
+        on right: 10 32 56 59
+    unsigned_grammar (93)
+        on left: 43 44 45 46
+        on right: 40
+    signed_grammar (94)
+        on left: 47 48 49 50
+        on right: 41
+    long_grammar (95)
+        on left: 51 52
+        on right: 38 44 48
+    short_grammar (96)
+        on left: 53 54
+        on right: 39 45 49
+    function_declaration (97)
+        on left: 55
+        on right: 5
+    function_datatype (98)
+        on left: 56 57
+        on right: 55
+    function_parameters (99)
+        on left: 58
+        on right: 55
+    parameters (100)
+        on left: 59 60 61 62
+        on right: 58 64
+    all_parameter_identifiers (101)
+        on left: 63
+        on right: 59 60 61
+    multiple_parameters (102)
+        on left: 64 65
+        on right: 63
+    parameter_identifier (103)
+        on left: 66
+        on right: 63
+    extended_parameter (104)
+        on left: 67 68
+        on right: 66
+    statement (105)
+        on left: 69 70 71 72 73 74 75
+        on right: 58 77 81 82 84 86
+    multiple_statement (106)
+        on left: 76
+        on right: 70
+    statements (107)
+        on left: 77 78
+        on right: 76 77
+    expression_statment (108)
+        on left: 79 80
+        on right: 69
+    conditional_statements (109)
+        on left: 81
+        on right: 71
+    extended_conditional_statements (110)
+        on left: 82 83
+        on right: 81
+    iterative_statements (111)
+        on left: 84 85 86
+        on right: 72
+    for_initialization (112)
+        on left: 87 88 89
+        on right: 85
+    return_statement (113)
+        on left: 90
+        on right: 73
+    return_element (114)
+        on left: 91 92
+        on right: 90
+    break_statement (115)
+        on left: 93
+        on right: 74
+    expression (116)
+        on left: 94 95
+        on right: 19 79 85 88 92 96 97 98 99 100 101 134 136 142 143
+    expressions (117)
+        on left: 96 97 98 99 100 101 102 103
+        on right: 94
+    simple_expression (118)
+        on left: 104
+        on right: 81 84 85 86 95
+    simple_expression_extend (119)
+        on left: 105 106
+        on right: 104 105
+    and_expression (120)
+        on left: 107
+        on right: 104 105
+    and_expression_extend (121)
+        on left: 108 109
+        on right: 107 108
+    unary_relation_expression (122)
+        on left: 110 111
+        on right: 107 108 110
+    regular_expression (123)
+        on left: 112
+        on right: 111
+    regular_expression_extend (124)
+        on left: 113 114
+        on right: 112
+    relational_operators (125)
+        on left: 115 116 117 118 119 120
+        on right: 113
+    sum_expression (126)
+        on left: 121 122
+        on right: 112 113 121
+    sum_operators (127)
+        on left: 123 124
+        on right: 121
+    term (128)
+        on left: 125 126
+        on right: 121 122 125
+    multiply_operators (129)
+        on left: 127 128 129
+        on right: 125
+    factor (130)
+        on left: 130 131
+        on right: 125 126
+    id (131)
+        on left: 132 133
+        on right: 94 131 133
+    extended_id (132)
+        on left: 134 135
+        on right: 133
+    non_id (133)
+        on left: 136 137 138
+        on right: 130
+    function_call (134)
+        on left: 139
+        on right: 137
+    arguments (135)
+        on left: 140 141
+        on right: 139
+    arguments_list (136)
+        on left: 142
+        on right: 140
+    extended_arguments (137)
+        on left: 143 144
+        on right: 142 143
+    constant (138)
+        on left: 145 146 147 148 149 150 151
+        on right: 138
+
+
+State 0
+
+    0 $accept: • head_parse $end
+
+    INT       shift, and go to state 1
+    CHAR      shift, and go to state 2
+    FLOAT     shift, and go to state 3
+    DOUBLE    shift, and go to state 4
+    LONG      shift, and go to state 5
+    SHORT     shift, and go to state 6
+    SIGNED    shift, and go to state 7
+    UNSIGNED  shift, and go to state 8
+    STRUCT    shift, and go to state 9
+    VOID      shift, and go to state 10
+
+    $default  reduce using rule 3 (declarations)
+
+    head_parse             go to state 11
+    declarations           go to state 12
+    declaration            go to state 13
+    structure_declaration  go to state 14
+    variable_declaration   go to state 15
+    structure_initialize   go to state 16
+    pointer_datatype       go to state 17
+    datatype               go to state 18
+    function_declaration   go to state 19
+    function_datatype      go to state 20
+
+
+State 1
+
+   34 datatype: INT •
+
+    $default  reduce using rule 34 (datatype)
+
+
+State 2
+
+   35 datatype: CHAR •
+
+    $default  reduce using rule 35 (datatype)
+
+
+State 3
+
+   36 datatype: FLOAT •
+
+    $default  reduce using rule 36 (datatype)
+
+
+State 4
+
+   37 datatype: DOUBLE •
+
+    $default  reduce using rule 37 (datatype)
+
+
+State 5
+
+   38 datatype: LONG • long_grammar
+
+    INT  shift, and go to state 21
+
+    $default  reduce using rule 52 (long_grammar)
+
+    long_grammar  go to state 22
+
+
+State 6
+
+   39 datatype: SHORT • short_grammar
+
+    INT  shift, and go to state 23
+
+    $default  reduce using rule 54 (short_grammar)
+
+    short_grammar  go to state 24
+
+
+State 7
+
+   41 datatype: SIGNED • signed_grammar
+
+    INT    shift, and go to state 25
+    LONG   shift, and go to state 26
+    SHORT  shift, and go to state 27
+
+    $default  reduce using rule 50 (signed_grammar)
+
+    signed_grammar  go to state 28
+
+
+State 8
+
+   40 datatype: UNSIGNED • unsigned_grammar
+
+    INT    shift, and go to state 29
+    LONG   shift, and go to state 30
+    SHORT  shift, and go to state 31
+
+    $default  reduce using rule 46 (unsigned_grammar)
+
+    unsigned_grammar  go to state 32
+
+
+State 9
+
+    7 structure_declaration: STRUCT • identifier '{' structure_content '}' ';'
+   12 structure_initialize: STRUCT • identifier variables ';'
+   33 pointer_datatype: STRUCT • identifier '*'
+
+    identifier  shift, and go to state 33
+
+
+State 10
+
+   42 datatype: VOID •
+
+    $default  reduce using rule 42 (datatype)
+
+
+State 11
+
+    0 $accept: head_parse • $end
+
+    $end  shift, and go to state 34
+
+
+State 12
+
+    1 head_parse: declarations •
+
+    $default  reduce using rule 1 (head_parse)
+
+
+State 13
+
+    2 declarations: declaration • declarations
+
+    INT       shift, and go to state 1
+    CHAR      shift, and go to state 2
+    FLOAT     shift, and go to state 3
+    DOUBLE    shift, and go to state 4
+    LONG      shift, and go to state 5
+    SHORT     shift, and go to state 6
+    SIGNED    shift, and go to state 7
+    UNSIGNED  shift, and go to state 8
+    STRUCT    shift, and go to state 9
+    VOID      shift, and go to state 10
+
+    $default  reduce using rule 3 (declarations)
+
+    declarations           go to state 35
+    declaration            go to state 13
+    structure_declaration  go to state 14
+    variable_declaration   go to state 15
+    structure_initialize   go to state 16
+    pointer_datatype       go to state 17
+    datatype               go to state 18
+    function_declaration   go to state 19
+    function_datatype      go to state 20
+
+
+State 14
+
+    6 declaration: structure_declaration •
+
+    $default  reduce using rule 6 (declaration)
+
+
+State 15
+
+    4 declaration: variable_declaration •
+
+    $default  reduce using rule 4 (declaration)
+
+
+State 16
+
+   11 variable_declaration: structure_initialize •
+
+    $default  reduce using rule 11 (variable_declaration)
+
+
+State 17
+
+   57 function_datatype: pointer_datatype • identifier '('
+
+    identifier  shift, and go to state 36
+
+
+State 18
+
+   10 variable_declaration: datatype • variables ';'
+   32 pointer_datatype: datatype • '*'
+   56 function_datatype: datatype • identifier '('
+
+    identifier  shift, and go to state 37
+    '*'         shift, and go to state 38
+
+    variables        go to state 39
+    identifier_name  go to state 40
+
+
+State 19
+
+    5 declaration: function_declaration •
+
+    $default  reduce using rule 5 (declaration)
+
+
+State 20
+
+   55 function_declaration: function_datatype • function_parameters
+
+    INT       shift, and go to state 1
+    CHAR      shift, and go to state 2
+    FLOAT     shift, and go to state 3
+    DOUBLE    shift, and go to state 4
+    LONG      shift, and go to state 5
+    SHORT     shift, and go to state 6
+    SIGNED    shift, and go to state 7
+    UNSIGNED  shift, and go to state 8
+    STRUCT    shift, and go to state 41
+    VOID      shift, and go to state 10
+
+    $default  reduce using rule 62 (parameters)
+
+    pointer_datatype     go to state 42
+    datatype             go to state 43
+    function_parameters  go to state 44
+    parameters           go to state 45
+
+
+State 21
+
+   51 long_grammar: INT •
+
+    $default  reduce using rule 51 (long_grammar)
+
+
+State 22
+
+   38 datatype: LONG long_grammar •
+
+    $default  reduce using rule 38 (datatype)
+
+
+State 23
+
+   53 short_grammar: INT •
+
+    $default  reduce using rule 53 (short_grammar)
+
+
+State 24
+
+   39 datatype: SHORT short_grammar •
+
+    $default  reduce using rule 39 (datatype)
+
+
+State 25
+
+   47 signed_grammar: INT •
+
+    $default  reduce using rule 47 (signed_grammar)
+
+
+State 26
+
+   48 signed_grammar: LONG • long_grammar
+
+    INT  shift, and go to state 21
+
+    $default  reduce using rule 52 (long_grammar)
+
+    long_grammar  go to state 46
+
+
+State 27
+
+   49 signed_grammar: SHORT • short_grammar
+
+    INT  shift, and go to state 23
+
+    $default  reduce using rule 54 (short_grammar)
+
+    short_grammar  go to state 47
+
+
+State 28
+
+   41 datatype: SIGNED signed_grammar •
+
+    $default  reduce using rule 41 (datatype)
+
+
+State 29
+
+   43 unsigned_grammar: INT •
+
+    $default  reduce using rule 43 (unsigned_grammar)
+
+
+State 30
+
+   44 unsigned_grammar: LONG • long_grammar
+
+    INT  shift, and go to state 21
+
+    $default  reduce using rule 52 (long_grammar)
+
+    long_grammar  go to state 48
+
+
+State 31
+
+   45 unsigned_grammar: SHORT • short_grammar
+
+    INT  shift, and go to state 23
+
+    $default  reduce using rule 54 (short_grammar)
+
+    short_grammar  go to state 49
+
+
+State 32
+
+   40 datatype: UNSIGNED unsigned_grammar •
+
+    $default  reduce using rule 40 (datatype)
+
+
+State 33
+
+    7 structure_declaration: STRUCT identifier • '{' structure_content '}' ';'
+   12 structure_initialize: STRUCT identifier • variables ';'
+   33 pointer_datatype: STRUCT identifier • '*'
+
+    identifier  shift, and go to state 50
+    '*'         shift, and go to state 51
+    '{'         shift, and go to state 52
+
+    variables        go to state 53
+    identifier_name  go to state 40
+
+
+State 34
+
+    0 $accept: head_parse $end •
+
+    $default  accept
+
+
+State 35
+
+    2 declarations: declaration declarations •
+
+    $default  reduce using rule 2 (declarations)
+
+
+State 36
+
+   57 function_datatype: pointer_datatype identifier • '('
+
+    '('  shift, and go to state 54
+
+
+State 37
+
+   17 identifier_name: identifier • $@1 extended_identifier
+   56 function_datatype: datatype identifier • '('
+
+    '('  shift, and go to state 55
+
+    $default  reduce using rule 16 ($@1)
+
+    $@1  go to state 56
+
+
+State 38
+
+   32 pointer_datatype: datatype '*' •
+
+    $default  reduce using rule 32 (pointer_datatype)
+
+
+State 39
+
+   10 variable_declaration: datatype variables • ';'
+
+    ';'  shift, and go to state 57
+
+
+State 40
+
+   13 variables: identifier_name • multiple_variables
+
+    ','  shift, and go to state 58
+
+    $default  reduce using rule 15 (multiple_variables)
+
+    multiple_variables  go to state 59
+
+
+State 41
+
+   33 pointer_datatype: STRUCT • identifier '*'
+   60 parameters: STRUCT • identifier all_parameter_identifiers
+
+    identifier  shift, and go to state 60
+
+
+State 42
+
+   61 parameters: pointer_datatype • all_parameter_identifiers
+
+    identifier  shift, and go to state 61
+
+    all_parameter_identifiers  go to state 62
+    parameter_identifier       go to state 63
+
+
+State 43
+
+   32 pointer_datatype: datatype • '*'
+   59 parameters: datatype • all_parameter_identifiers
+
+    identifier  shift, and go to state 61
+    '*'         shift, and go to state 38
+
+    all_parameter_identifiers  go to state 64
+    parameter_identifier       go to state 63
+
+
+State 44
+
+   55 function_declaration: function_datatype function_parameters •
+
+    $default  reduce using rule 55 (function_declaration)
+
+
+State 45
+
+   58 function_parameters: parameters • ')' statement
+
+    ')'  shift, and go to state 65
+
+
+State 46
+
+   48 signed_grammar: LONG long_grammar •
+
+    $default  reduce using rule 48 (signed_grammar)
+
+
+State 47
+
+   49 signed_grammar: SHORT short_grammar •
+
+    $default  reduce using rule 49 (signed_grammar)
+
+
+State 48
+
+   44 unsigned_grammar: LONG long_grammar •
+
+    $default  reduce using rule 44 (unsigned_grammar)
+
+
+State 49
+
+   45 unsigned_grammar: SHORT short_grammar •
+
+    $default  reduce using rule 45 (unsigned_grammar)
+
+
+State 50
+
+   17 identifier_name: identifier • $@1 extended_identifier
+
+    $default  reduce using rule 16 ($@1)
+
+    $@1  go to state 56
+
+
+State 51
+
+   33 pointer_datatype: STRUCT identifier '*' •
+
+    $default  reduce using rule 33 (pointer_datatype)
+
+
+State 52
+
+    7 structure_declaration: STRUCT identifier '{' • structure_content '}' ';'
+
+    INT       shift, and go to state 1
+    CHAR      shift, and go to state 2
+    FLOAT     shift, and go to state 3
+    DOUBLE    shift, and go to state 4
+    LONG      shift, and go to state 5
+    SHORT     shift, and go to state 6
+    SIGNED    shift, and go to state 7
+    UNSIGNED  shift, and go to state 8
+    STRUCT    shift, and go to state 66
+    VOID      shift, and go to state 10
+
+    $default  reduce using rule 9 (structure_content)
+
+    structure_content     go to state 67
+    variable_declaration  go to state 68
+    structure_initialize  go to state 16
+    datatype              go to state 69
+
+
+State 53
+
+   12 structure_initialize: STRUCT identifier variables • ';'
+
+    ';'  shift, and go to state 70
+
+
+State 54
+
+   57 function_datatype: pointer_datatype identifier '(' •
+
+    $default  reduce using rule 57 (function_datatype)
+
+
+State 55
+
+   56 function_datatype: datatype identifier '(' •
+
+    $default  reduce using rule 56 (function_datatype)
+
+
+State 56
+
+   17 identifier_name: identifier $@1 • extended_identifier
+
+    '='  shift, and go to state 71
+    '['  shift, and go to state 72
+
+    $default  reduce using rule 21 (array_identifier)
+
+    extended_identifier  go to state 73
+    array_identifier     go to state 74
+
+
+State 57
+
+   10 variable_declaration: datatype variables ';' •
+
+    $default  reduce using rule 10 (variable_declaration)
+
+
+State 58
+
+   14 multiple_variables: ',' • variables
+
+    identifier  shift, and go to state 50
+
+    variables        go to state 75
+    identifier_name  go to state 40
+
+
+State 59
+
+   13 variables: identifier_name multiple_variables •
+
+    $default  reduce using rule 13 (variables)
+
+
+State 60
+
+   33 pointer_datatype: STRUCT identifier • '*'
+   60 parameters: STRUCT identifier • all_parameter_identifiers
+
+    identifier  shift, and go to state 61
+    '*'         shift, and go to state 51
+
+    all_parameter_identifiers  go to state 76
+    parameter_identifier       go to state 63
+
+
+State 61
+
+   66 parameter_identifier: identifier • extended_parameter
+
+    '['  shift, and go to state 77
+
+    $default  reduce using rule 68 (extended_parameter)
+
+    extended_parameter  go to state 78
+
+
+State 62
+
+   61 parameters: pointer_datatype all_parameter_identifiers •
+
+    $default  reduce using rule 61 (parameters)
+
+
+State 63
+
+   63 all_parameter_identifiers: parameter_identifier • multiple_parameters
+
+    ','  shift, and go to state 79
+
+    $default  reduce using rule 65 (multiple_parameters)
+
+    multiple_parameters  go to state 80
+
+
+State 64
+
+   59 parameters: datatype all_parameter_identifiers •
+
+    $default  reduce using rule 59 (parameters)
+
+
+State 65
+
+   58 function_parameters: parameters ')' • statement
+
+    IF                    shift, and go to state 81
+    WHILE                 shift, and go to state 82
+    FOR                   shift, and go to state 83
+    DO                    shift, and go to state 84
+    INT                   shift, and go to state 1
+    CHAR                  shift, and go to state 2
+    FLOAT                 shift, and go to state 3
+    DOUBLE                shift, and go to state 4
+    LONG                  shift, and go to state 5
+    SHORT                 shift, and go to state 6
+    SIGNED                shift, and go to state 7
+    UNSIGNED              shift, and go to state 8
+    STRUCT                shift, and go to state 66
+    RETURN                shift, and go to state 85
+    BREAK                 shift, and go to state 86
+    VOID                  shift, and go to state 10
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    '{'                   shift, and go to state 96
+    ';'                   shift, and go to state 97
+    '('                   shift, and go to state 98
+
+    variable_declaration       go to state 99
+    structure_initialize       go to state 16
+    datatype                   go to state 69
+    statement                  go to state 100
+    multiple_statement         go to state 101
+    expression_statment        go to state 102
+    conditional_statements     go to state 103
+    iterative_statements       go to state 104
+    return_statement           go to state 105
+    break_statement            go to state 106
+    expression                 go to state 107
+    simple_expression          go to state 108
+    and_expression             go to state 109
+    unary_relation_expression  go to state 110
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 115
+    non_id                     go to state 116
+    function_call              go to state 117
+    constant                   go to state 118
+
+
+State 66
+
+   12 structure_initialize: STRUCT • identifier variables ';'
+
+    identifier  shift, and go to state 119
+
+
+State 67
+
+    7 structure_declaration: STRUCT identifier '{' structure_content • '}' ';'
+
+    '}'  shift, and go to state 120
+
+
+State 68
+
+    8 structure_content: variable_declaration • structure_content
+
+    INT       shift, and go to state 1
+    CHAR      shift, and go to state 2
+    FLOAT     shift, and go to state 3
+    DOUBLE    shift, and go to state 4
+    LONG      shift, and go to state 5
+    SHORT     shift, and go to state 6
+    SIGNED    shift, and go to state 7
+    UNSIGNED  shift, and go to state 8
+    STRUCT    shift, and go to state 66
+    VOID      shift, and go to state 10
+
+    $default  reduce using rule 9 (structure_content)
+
+    structure_content     go to state 121
+    variable_declaration  go to state 68
+    structure_initialize  go to state 16
+    datatype              go to state 69
+
+
+State 69
+
+   10 variable_declaration: datatype • variables ';'
+
+    identifier  shift, and go to state 50
+
+    variables        go to state 39
+    identifier_name  go to state 40
+
+
+State 70
+
+   12 structure_initialize: STRUCT identifier variables ';' •
+
+    $default  reduce using rule 12 (structure_initialize)
+
+
+State 71
+
+   19 extended_identifier: '=' • expression
+
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    '('                   shift, and go to state 98
+
+    expression                 go to state 122
+    simple_expression          go to state 108
+    and_expression             go to state 109
+    unary_relation_expression  go to state 110
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 115
+    non_id                     go to state 116
+    function_call              go to state 117
+    constant                   go to state 118
+
+
+State 72
+
+   20 array_identifier: '[' • array_dims
+
+    integer_constant  shift, and go to state 123
+    ']'               shift, and go to state 124
+
+    array_dims  go to state 125
+
+
+State 73
+
+   17 identifier_name: identifier $@1 extended_identifier •
+
+    $default  reduce using rule 17 (identifier_name)
+
+
+State 74
+
+   18 extended_identifier: array_identifier •
+
+    $default  reduce using rule 18 (extended_identifier)
+
+
+State 75
+
+   14 multiple_variables: ',' variables •
+
+    $default  reduce using rule 14 (multiple_variables)
+
+
+State 76
+
+   60 parameters: STRUCT identifier all_parameter_identifiers •
+
+    $default  reduce using rule 60 (parameters)
+
+
+State 77
+
+   67 extended_parameter: '[' • ']'
+
+    ']'  shift, and go to state 126
+
+
+State 78
+
+   66 parameter_identifier: identifier extended_parameter •
+
+    $default  reduce using rule 66 (parameter_identifier)
+
+
+State 79
+
+   64 multiple_parameters: ',' • parameters
+
+    INT       shift, and go to state 1
+    CHAR      shift, and go to state 2
+    FLOAT     shift, and go to state 3
+    DOUBLE    shift, and go to state 4
+    LONG      shift, and go to state 5
+    SHORT     shift, and go to state 6
+    SIGNED    shift, and go to state 7
+    UNSIGNED  shift, and go to state 8
+    STRUCT    shift, and go to state 41
+    VOID      shift, and go to state 10
+
+    $default  reduce using rule 62 (parameters)
+
+    pointer_datatype  go to state 42
+    datatype          go to state 43
+    parameters        go to state 127
+
+
+State 80
+
+   63 all_parameter_identifiers: parameter_identifier multiple_parameters •
+
+    $default  reduce using rule 63 (all_parameter_identifiers)
+
+
+State 81
+
+   81 conditional_statements: IF • '(' simple_expression ')' statement extended_conditional_statements
+
+    '('  shift, and go to state 128
+
+
+State 82
+
+   84 iterative_statements: WHILE • '(' simple_expression ')' statement
+
+    '('  shift, and go to state 129
+
+
+State 83
+
+   85 iterative_statements: FOR • '(' for_initialization simple_expression ';' expression ')'
+
+    '('  shift, and go to state 130
+
+
+State 84
+
+   86 iterative_statements: DO • statement WHILE '(' simple_expression ')' ';'
+
+    IF                    shift, and go to state 81
+    WHILE                 shift, and go to state 82
+    FOR                   shift, and go to state 83
+    DO                    shift, and go to state 84
+    INT                   shift, and go to state 1
+    CHAR                  shift, and go to state 2
+    FLOAT                 shift, and go to state 3
+    DOUBLE                shift, and go to state 4
+    LONG                  shift, and go to state 5
+    SHORT                 shift, and go to state 6
+    SIGNED                shift, and go to state 7
+    UNSIGNED              shift, and go to state 8
+    STRUCT                shift, and go to state 66
+    RETURN                shift, and go to state 85
+    BREAK                 shift, and go to state 86
+    VOID                  shift, and go to state 10
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    '{'                   shift, and go to state 96
+    ';'                   shift, and go to state 97
+    '('                   shift, and go to state 98
+
+    variable_declaration       go to state 99
+    structure_initialize       go to state 16
+    datatype                   go to state 69
+    statement                  go to state 131
+    multiple_statement         go to state 101
+    expression_statment        go to state 102
+    conditional_statements     go to state 103
+    iterative_statements       go to state 104
+    return_statement           go to state 105
+    break_statement            go to state 106
+    expression                 go to state 107
+    simple_expression          go to state 108
+    and_expression             go to state 109
+    unary_relation_expression  go to state 110
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 115
+    non_id                     go to state 116
+    function_call              go to state 117
+    constant                   go to state 118
+
+
+State 85
+
+   90 return_statement: RETURN • return_element
+
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    ';'                   shift, and go to state 132
+    '('                   shift, and go to state 98
+
+    return_element             go to state 133
+    expression                 go to state 134
+    simple_expression          go to state 108
+    and_expression             go to state 109
+    unary_relation_expression  go to state 110
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 115
+    non_id                     go to state 116
+    function_call              go to state 117
+    constant                   go to state 118
+
+
+State 86
+
+   93 break_statement: BREAK • ';'
+
+    ';'  shift, and go to state 135
+
+
+State 87
+
+  132 id: identifier •
+  139 function_call: identifier • '(' arguments ')'
+
+    '('  shift, and go to state 136
+
+    $default  reduce using rule 132 (id)
+
+
+State 88
+
+  145 constant: integer_constant •
+
+    $default  reduce using rule 145 (constant)
+
+
+State 89
+
+  146 constant: string_constant •
+
+    $default  reduce using rule 146 (constant)
+
+
+State 90
+
+  147 constant: float_constant •
+
+    $default  reduce using rule 147 (constant)
+
+
+State 91
+
+  148 constant: character_constant •
+
+    $default  reduce using rule 148 (constant)
+
+
+State 92
+
+  151 constant: binary_constant •
+
+    $default  reduce using rule 151 (constant)
+
+
+State 93
+
+  150 constant: hexadecimal_constant •
+
+    $default  reduce using rule 150 (constant)
+
+
+State 94
+
+  149 constant: octal_constant •
+
+    $default  reduce using rule 149 (constant)
+
+
+State 95
+
+  110 unary_relation_expression: NOT • unary_relation_expression
+
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    '('                   shift, and go to state 98
+
+    unary_relation_expression  go to state 137
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 138
+    non_id                     go to state 116
+    function_call              go to state 117
+    constant                   go to state 118
+
+
+State 96
+
+   76 multiple_statement: '{' • statements '}'
+
+    IF                    shift, and go to state 81
+    WHILE                 shift, and go to state 82
+    FOR                   shift, and go to state 83
+    DO                    shift, and go to state 84
+    INT                   shift, and go to state 1
+    CHAR                  shift, and go to state 2
+    FLOAT                 shift, and go to state 3
+    DOUBLE                shift, and go to state 4
+    LONG                  shift, and go to state 5
+    SHORT                 shift, and go to state 6
+    SIGNED                shift, and go to state 7
+    UNSIGNED              shift, and go to state 8
+    STRUCT                shift, and go to state 66
+    RETURN                shift, and go to state 85
+    BREAK                 shift, and go to state 86
+    VOID                  shift, and go to state 10
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    '{'                   shift, and go to state 96
+    ';'                   shift, and go to state 97
+    '('                   shift, and go to state 98
+
+    $default  reduce using rule 78 (statements)
+
+    variable_declaration       go to state 99
+    structure_initialize       go to state 16
+    datatype                   go to state 69
+    statement                  go to state 139
+    multiple_statement         go to state 101
+    statements                 go to state 140
+    expression_statment        go to state 102
+    conditional_statements     go to state 103
+    iterative_statements       go to state 104
+    return_statement           go to state 105
+    break_statement            go to state 106
+    expression                 go to state 107
+    simple_expression          go to state 108
+    and_expression             go to state 109
+    unary_relation_expression  go to state 110
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 115
+    non_id                     go to state 116
+    function_call              go to state 117
+    constant                   go to state 118
+
+
+State 97
+
+   80 expression_statment: ';' •
+
+    $default  reduce using rule 80 (expression_statment)
+
+
+State 98
+
+  136 non_id: '(' • expression ')'
+
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    '('                   shift, and go to state 98
+
+    expression                 go to state 141
+    simple_expression          go to state 108
+    and_expression             go to state 109
+    unary_relation_expression  go to state 110
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 115
+    non_id                     go to state 116
+    function_call              go to state 117
+    constant                   go to state 118
+
+
+State 99
+
+   75 statement: variable_declaration •
+
+    $default  reduce using rule 75 (statement)
+
+
+State 100
+
+   58 function_parameters: parameters ')' statement •
+
+    $default  reduce using rule 58 (function_parameters)
+
+
+State 101
+
+   70 statement: multiple_statement •
+
+    $default  reduce using rule 70 (statement)
+
+
+State 102
+
+   69 statement: expression_statment •
+
+    $default  reduce using rule 69 (statement)
+
+
+State 103
+
+   71 statement: conditional_statements •
+
+    $default  reduce using rule 71 (statement)
+
+
+State 104
+
+   72 statement: iterative_statements •
+
+    $default  reduce using rule 72 (statement)
+
+
+State 105
+
+   73 statement: return_statement •
+
+    $default  reduce using rule 73 (statement)
+
+
+State 106
+
+   74 statement: break_statement •
+
+    $default  reduce using rule 74 (statement)
+
+
+State 107
+
+   79 expression_statment: expression • ';'
+
+    ';'  shift, and go to state 142
+
+
+State 108
+
+   95 expression: simple_expression •
+
+    $default  reduce using rule 95 (expression)
+
+
+State 109
+
+  104 simple_expression: and_expression • simple_expression_extend
+
+    LOGICAL_OR  shift, and go to state 143
+
+    $default  reduce using rule 106 (simple_expression_extend)
+
+    simple_expression_extend  go to state 144
+
+
+State 110
+
+  107 and_expression: unary_relation_expression • and_expression_extend
+
+    LOGICAL_AND  shift, and go to state 145
+
+    $default  reduce using rule 109 (and_expression_extend)
+
+    and_expression_extend  go to state 146
+
+
+State 111
+
+  111 unary_relation_expression: regular_expression •
+
+    $default  reduce using rule 111 (unary_relation_expression)
+
+
+State 112
+
+  112 regular_expression: sum_expression • regular_expression_extend
+  121 sum_expression: sum_expression • sum_operators term
+
+    EQUAL        shift, and go to state 147
+    NOT_EQUAL    shift, and go to state 148
+    LESS_EQUAL   shift, and go to state 149
+    LESS         shift, and go to state 150
+    GREAT_EQUAL  shift, and go to state 151
+    GREAT        shift, and go to state 152
+    '+'          shift, and go to state 153
+    '-'          shift, and go to state 154
+
+    $default  reduce using rule 114 (regular_expression_extend)
+
+    regular_expression_extend  go to state 155
+    relational_operators       go to state 156
+    sum_operators              go to state 157
+
+
+State 113
+
+  122 sum_expression: term •
+  125 term: term • multiply_operators factor
+
+    '*'  shift, and go to state 158
+    '/'  shift, and go to state 159
+    '%'  shift, and go to state 160
+
+    $default  reduce using rule 122 (sum_expression)
+
+    multiply_operators  go to state 161
+
+
+State 114
+
+  126 term: factor •
+
+    $default  reduce using rule 126 (term)
+
+
+State 115
+
+   94 expression: id • expressions
+  131 factor: id •
+  133 id: id • extended_id
+
+    MOD_EQUAL       shift, and go to state 162
+    MULTIPLY_EQUAL  shift, and go to state 163
+    DIVIDE_EQUAL    shift, and go to state 164
+    ADD_EQUAL       shift, and go to state 165
+    SUBTRACT_EQUAL  shift, and go to state 166
+    '='             shift, and go to state 167
+    INCREMENT       shift, and go to state 168
+    DECREMENT       shift, and go to state 169
+    '['             shift, and go to state 170
+    '.'             shift, and go to state 171
+
+    $default  reduce using rule 131 (factor)
+
+    expressions  go to state 172
+    extended_id  go to state 173
+
+
+State 116
+
+  130 factor: non_id •
+
+    $default  reduce using rule 130 (factor)
+
+
+State 117
+
+  137 non_id: function_call •
+
+    $default  reduce using rule 137 (non_id)
+
+
+State 118
+
+  138 non_id: constant •
+
+    $default  reduce using rule 138 (non_id)
+
+
+State 119
+
+   12 structure_initialize: STRUCT identifier • variables ';'
+
+    identifier  shift, and go to state 50
+
+    variables        go to state 53
+    identifier_name  go to state 40
+
+
+State 120
+
+    7 structure_declaration: STRUCT identifier '{' structure_content '}' • ';'
+
+    ';'  shift, and go to state 174
+
+
+State 121
+
+    8 structure_content: variable_declaration structure_content •
+
+    $default  reduce using rule 8 (structure_content)
+
+
+State 122
+
+   19 extended_identifier: '=' expression •
+
+    $default  reduce using rule 19 (extended_identifier)
+
+
+State 123
+
+   22 array_dims: integer_constant • ']' initilization
+
+    ']'  shift, and go to state 175
+
+
+State 124
+
+   23 array_dims: ']' • string_initilization
+
+    '='  shift, and go to state 176
+
+    string_initilization  go to state 177
+
+
+State 125
+
+   20 array_identifier: '[' array_dims •
+
+    $default  reduce using rule 20 (array_identifier)
+
+
+State 126
+
+   67 extended_parameter: '[' ']' •
+
+    $default  reduce using rule 67 (extended_parameter)
+
+
+State 127
+
+   64 multiple_parameters: ',' parameters •
+
+    $default  reduce using rule 64 (multiple_parameters)
+
+
+State 128
+
+   81 conditional_statements: IF '(' • simple_expression ')' statement extended_conditional_statements
+
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    '('                   shift, and go to state 98
+
+    simple_expression          go to state 178
+    and_expression             go to state 109
+    unary_relation_expression  go to state 110
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 138
+    non_id                     go to state 116
+    function_call              go to state 117
+    constant                   go to state 118
+
+
+State 129
+
+   84 iterative_statements: WHILE '(' • simple_expression ')' statement
+
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    '('                   shift, and go to state 98
+
+    simple_expression          go to state 179
+    and_expression             go to state 109
+    unary_relation_expression  go to state 110
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 138
+    non_id                     go to state 116
+    function_call              go to state 117
+    constant                   go to state 118
+
+
+State 130
+
+   85 iterative_statements: FOR '(' • for_initialization simple_expression ';' expression ')'
+
+    INT                   shift, and go to state 1
+    CHAR                  shift, and go to state 2
+    FLOAT                 shift, and go to state 3
+    DOUBLE                shift, and go to state 4
+    LONG                  shift, and go to state 5
+    SHORT                 shift, and go to state 6
+    SIGNED                shift, and go to state 7
+    UNSIGNED              shift, and go to state 8
+    STRUCT                shift, and go to state 66
+    VOID                  shift, and go to state 10
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    ';'                   shift, and go to state 180
+    '('                   shift, and go to state 98
+
+    variable_declaration       go to state 181
+    structure_initialize       go to state 16
+    datatype                   go to state 69
+    for_initialization         go to state 182
+    expression                 go to state 183
+    simple_expression          go to state 108
+    and_expression             go to state 109
+    unary_relation_expression  go to state 110
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 115
+    non_id                     go to state 116
+    function_call              go to state 117
+    constant                   go to state 118
+
+
+State 131
+
+   86 iterative_statements: DO statement • WHILE '(' simple_expression ')' ';'
+
+    WHILE  shift, and go to state 184
+
+
+State 132
+
+   91 return_element: ';' •
+
+    $default  reduce using rule 91 (return_element)
+
+
+State 133
+
+   90 return_statement: RETURN return_element •
+
+    $default  reduce using rule 90 (return_statement)
+
+
+State 134
+
+   92 return_element: expression • ';'
+
+    ';'  shift, and go to state 185
+
+
+State 135
+
+   93 break_statement: BREAK ';' •
+
+    $default  reduce using rule 93 (break_statement)
+
+
+State 136
+
+  139 function_call: identifier '(' • arguments ')'
+
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    '('                   shift, and go to state 98
+
+    $default  reduce using rule 141 (arguments)
+
+    expression                 go to state 186
+    simple_expression          go to state 108
+    and_expression             go to state 109
+    unary_relation_expression  go to state 110
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 115
+    non_id                     go to state 116
+    function_call              go to state 117
+    arguments                  go to state 187
+    arguments_list             go to state 188
+    constant                   go to state 118
+
+
+State 137
+
+  110 unary_relation_expression: NOT unary_relation_expression •
+
+    $default  reduce using rule 110 (unary_relation_expression)
+
+
+State 138
+
+  131 factor: id •
+  133 id: id • extended_id
+
+    '['  shift, and go to state 170
+    '.'  shift, and go to state 171
+
+    $default  reduce using rule 131 (factor)
+
+    extended_id  go to state 173
+
+
+State 139
+
+   77 statements: statement • statements
+
+    IF                    shift, and go to state 81
+    WHILE                 shift, and go to state 82
+    FOR                   shift, and go to state 83
+    DO                    shift, and go to state 84
+    INT                   shift, and go to state 1
+    CHAR                  shift, and go to state 2
+    FLOAT                 shift, and go to state 3
+    DOUBLE                shift, and go to state 4
+    LONG                  shift, and go to state 5
+    SHORT                 shift, and go to state 6
+    SIGNED                shift, and go to state 7
+    UNSIGNED              shift, and go to state 8
+    STRUCT                shift, and go to state 66
+    RETURN                shift, and go to state 85
+    BREAK                 shift, and go to state 86
+    VOID                  shift, and go to state 10
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    '{'                   shift, and go to state 96
+    ';'                   shift, and go to state 97
+    '('                   shift, and go to state 98
+
+    $default  reduce using rule 78 (statements)
+
+    variable_declaration       go to state 99
+    structure_initialize       go to state 16
+    datatype                   go to state 69
+    statement                  go to state 139
+    multiple_statement         go to state 101
+    statements                 go to state 189
+    expression_statment        go to state 102
+    conditional_statements     go to state 103
+    iterative_statements       go to state 104
+    return_statement           go to state 105
+    break_statement            go to state 106
+    expression                 go to state 107
+    simple_expression          go to state 108
+    and_expression             go to state 109
+    unary_relation_expression  go to state 110
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 115
+    non_id                     go to state 116
+    function_call              go to state 117
+    constant                   go to state 118
+
+
+State 140
+
+   76 multiple_statement: '{' statements • '}'
+
+    '}'  shift, and go to state 190
+
+
+State 141
+
+  136 non_id: '(' expression • ')'
+
+    ')'  shift, and go to state 191
+
+
+State 142
+
+   79 expression_statment: expression ';' •
+
+    $default  reduce using rule 79 (expression_statment)
+
+
+State 143
+
+  105 simple_expression_extend: LOGICAL_OR • and_expression simple_expression_extend
+
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    '('                   shift, and go to state 98
+
+    and_expression             go to state 192
+    unary_relation_expression  go to state 110
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 138
+    non_id                     go to state 116
+    function_call              go to state 117
+    constant                   go to state 118
+
+
+State 144
+
+  104 simple_expression: and_expression simple_expression_extend •
+
+    $default  reduce using rule 104 (simple_expression)
+
+
+State 145
+
+  108 and_expression_extend: LOGICAL_AND • unary_relation_expression and_expression_extend
+
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    '('                   shift, and go to state 98
+
+    unary_relation_expression  go to state 193
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 138
+    non_id                     go to state 116
+    function_call              go to state 117
+    constant                   go to state 118
+
+
+State 146
+
+  107 and_expression: unary_relation_expression and_expression_extend •
+
+    $default  reduce using rule 107 (and_expression)
+
+
+State 147
+
+  119 relational_operators: EQUAL •
+
+    $default  reduce using rule 119 (relational_operators)
+
+
+State 148
+
+  115 relational_operators: NOT_EQUAL •
+
+    $default  reduce using rule 115 (relational_operators)
+
+
+State 149
+
+  116 relational_operators: LESS_EQUAL •
+
+    $default  reduce using rule 116 (relational_operators)
+
+
+State 150
+
+  118 relational_operators: LESS •
+
+    $default  reduce using rule 118 (relational_operators)
+
+
+State 151
+
+  120 relational_operators: GREAT_EQUAL •
+
+    $default  reduce using rule 120 (relational_operators)
+
+
+State 152
+
+  117 relational_operators: GREAT •
+
+    $default  reduce using rule 117 (relational_operators)
+
+
+State 153
+
+  123 sum_operators: '+' •
+
+    $default  reduce using rule 123 (sum_operators)
+
+
+State 154
+
+  124 sum_operators: '-' •
+
+    $default  reduce using rule 124 (sum_operators)
+
+
+State 155
+
+  112 regular_expression: sum_expression regular_expression_extend •
+
+    $default  reduce using rule 112 (regular_expression)
+
+
+State 156
+
+  113 regular_expression_extend: relational_operators • sum_expression
+
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    '('                   shift, and go to state 98
+
+    sum_expression  go to state 194
+    term            go to state 113
+    factor          go to state 114
+    id              go to state 138
+    non_id          go to state 116
+    function_call   go to state 117
+    constant        go to state 118
+
+
+State 157
+
+  121 sum_expression: sum_expression sum_operators • term
+
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    '('                   shift, and go to state 98
+
+    term           go to state 195
+    factor         go to state 114
+    id             go to state 138
+    non_id         go to state 116
+    function_call  go to state 117
+    constant       go to state 118
+
+
+State 158
+
+  127 multiply_operators: '*' •
+
+    $default  reduce using rule 127 (multiply_operators)
+
+
+State 159
+
+  128 multiply_operators: '/' •
+
+    $default  reduce using rule 128 (multiply_operators)
+
+
+State 160
+
+  129 multiply_operators: '%' •
+
+    $default  reduce using rule 129 (multiply_operators)
+
+
+State 161
+
+  125 term: term multiply_operators • factor
+
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    '('                   shift, and go to state 98
+
+    factor         go to state 196
+    id             go to state 138
+    non_id         go to state 116
+    function_call  go to state 117
+    constant       go to state 118
+
+
+State 162
+
+  101 expressions: MOD_EQUAL • expression
+
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    '('                   shift, and go to state 98
+
+    expression                 go to state 197
+    simple_expression          go to state 108
+    and_expression             go to state 109
+    unary_relation_expression  go to state 110
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 115
+    non_id                     go to state 116
+    function_call              go to state 117
+    constant                   go to state 118
+
+
+State 163
+
+   99 expressions: MULTIPLY_EQUAL • expression
+
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    '('                   shift, and go to state 98
+
+    expression                 go to state 198
+    simple_expression          go to state 108
+    and_expression             go to state 109
+    unary_relation_expression  go to state 110
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 115
+    non_id                     go to state 116
+    function_call              go to state 117
+    constant                   go to state 118
+
+
+State 164
+
+  100 expressions: DIVIDE_EQUAL • expression
+
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    '('                   shift, and go to state 98
+
+    expression                 go to state 199
+    simple_expression          go to state 108
+    and_expression             go to state 109
+    unary_relation_expression  go to state 110
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 115
+    non_id                     go to state 116
+    function_call              go to state 117
+    constant                   go to state 118
+
+
+State 165
+
+   97 expressions: ADD_EQUAL • expression
+
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    '('                   shift, and go to state 98
+
+    expression                 go to state 200
+    simple_expression          go to state 108
+    and_expression             go to state 109
+    unary_relation_expression  go to state 110
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 115
+    non_id                     go to state 116
+    function_call              go to state 117
+    constant                   go to state 118
+
+
+State 166
+
+   98 expressions: SUBTRACT_EQUAL • expression
+
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    '('                   shift, and go to state 98
+
+    expression                 go to state 201
+    simple_expression          go to state 108
+    and_expression             go to state 109
+    unary_relation_expression  go to state 110
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 115
+    non_id                     go to state 116
+    function_call              go to state 117
+    constant                   go to state 118
+
+
+State 167
+
+   96 expressions: '=' • expression
+
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    '('                   shift, and go to state 98
+
+    expression                 go to state 202
+    simple_expression          go to state 108
+    and_expression             go to state 109
+    unary_relation_expression  go to state 110
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 115
+    non_id                     go to state 116
+    function_call              go to state 117
+    constant                   go to state 118
+
+
+State 168
+
+  102 expressions: INCREMENT •
+
+    $default  reduce using rule 102 (expressions)
+
+
+State 169
+
+  103 expressions: DECREMENT •
+
+    $default  reduce using rule 103 (expressions)
+
+
+State 170
+
+  134 extended_id: '[' • expression ']'
+
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    '('                   shift, and go to state 98
+
+    expression                 go to state 203
+    simple_expression          go to state 108
+    and_expression             go to state 109
+    unary_relation_expression  go to state 110
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 115
+    non_id                     go to state 116
+    function_call              go to state 117
+    constant                   go to state 118
+
+
+State 171
+
+  135 extended_id: '.' • identifier
+
+    identifier  shift, and go to state 204
+
+
+State 172
+
+   94 expression: id expressions •
+
+    $default  reduce using rule 94 (expression)
+
+
+State 173
+
+  133 id: id extended_id •
+
+    $default  reduce using rule 133 (id)
+
+
+State 174
+
+    7 structure_declaration: STRUCT identifier '{' structure_content '}' ';' •
+
+    $default  reduce using rule 7 (structure_declaration)
+
+
+State 175
+
+   22 array_dims: integer_constant ']' • initilization
+
+    '='  shift, and go to state 205
+
+    $default  reduce using rule 26 (initilization)
+
+    initilization         go to state 206
+    string_initilization  go to state 207
+    array_initialization  go to state 208
+
+
+State 176
+
+   27 string_initilization: '=' • string_constant
+
+    string_constant  shift, and go to state 209
+
+
+State 177
+
+   23 array_dims: ']' string_initilization •
+
+    $default  reduce using rule 23 (array_dims)
+
+
+State 178
+
+   81 conditional_statements: IF '(' simple_expression • ')' statement extended_conditional_statements
+
+    ')'  shift, and go to state 210
+
+
+State 179
+
+   84 iterative_statements: WHILE '(' simple_expression • ')' statement
+
+    ')'  shift, and go to state 211
+
+
+State 180
+
+   89 for_initialization: ';' •
+
+    $default  reduce using rule 89 (for_initialization)
+
+
+State 181
+
+   87 for_initialization: variable_declaration •
+
+    $default  reduce using rule 87 (for_initialization)
+
+
+State 182
+
+   85 iterative_statements: FOR '(' for_initialization • simple_expression ';' expression ')'
+
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    '('                   shift, and go to state 98
+
+    simple_expression          go to state 212
+    and_expression             go to state 109
+    unary_relation_expression  go to state 110
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 138
+    non_id                     go to state 116
+    function_call              go to state 117
+    constant                   go to state 118
+
+
+State 183
+
+   88 for_initialization: expression • ';'
+
+    ';'  shift, and go to state 213
+
+
+State 184
+
+   86 iterative_statements: DO statement WHILE • '(' simple_expression ')' ';'
+
+    '('  shift, and go to state 214
+
+
+State 185
+
+   92 return_element: expression ';' •
+
+    $default  reduce using rule 92 (return_element)
+
+
+State 186
+
+  142 arguments_list: expression • extended_arguments
+
+    ','  shift, and go to state 215
+
+    $default  reduce using rule 144 (extended_arguments)
+
+    extended_arguments  go to state 216
+
+
+State 187
+
+  139 function_call: identifier '(' arguments • ')'
+
+    ')'  shift, and go to state 217
+
+
+State 188
+
+  140 arguments: arguments_list •
+
+    $default  reduce using rule 140 (arguments)
+
+
+State 189
+
+   77 statements: statement statements •
+
+    $default  reduce using rule 77 (statements)
+
+
+State 190
+
+   76 multiple_statement: '{' statements '}' •
+
+    $default  reduce using rule 76 (multiple_statement)
+
+
+State 191
+
+  136 non_id: '(' expression ')' •
+
+    $default  reduce using rule 136 (non_id)
+
+
+State 192
+
+  105 simple_expression_extend: LOGICAL_OR and_expression • simple_expression_extend
+
+    LOGICAL_OR  shift, and go to state 143
+
+    $default  reduce using rule 106 (simple_expression_extend)
+
+    simple_expression_extend  go to state 218
+
+
+State 193
+
+  108 and_expression_extend: LOGICAL_AND unary_relation_expression • and_expression_extend
+
+    LOGICAL_AND  shift, and go to state 145
+
+    $default  reduce using rule 109 (and_expression_extend)
+
+    and_expression_extend  go to state 219
+
+
+State 194
+
+  113 regular_expression_extend: relational_operators sum_expression •
+  121 sum_expression: sum_expression • sum_operators term
+
+    '+'  shift, and go to state 153
+    '-'  shift, and go to state 154
+
+    $default  reduce using rule 113 (regular_expression_extend)
+
+    sum_operators  go to state 157
+
+
+State 195
+
+  121 sum_expression: sum_expression sum_operators term •
+  125 term: term • multiply_operators factor
+
+    '*'  shift, and go to state 158
+    '/'  shift, and go to state 159
+    '%'  shift, and go to state 160
+
+    $default  reduce using rule 121 (sum_expression)
+
+    multiply_operators  go to state 161
+
+
+State 196
+
+  125 term: term multiply_operators factor •
+
+    $default  reduce using rule 125 (term)
+
+
+State 197
+
+  101 expressions: MOD_EQUAL expression •
+
+    $default  reduce using rule 101 (expressions)
+
+
+State 198
+
+   99 expressions: MULTIPLY_EQUAL expression •
+
+    $default  reduce using rule 99 (expressions)
+
+
+State 199
+
+  100 expressions: DIVIDE_EQUAL expression •
+
+    $default  reduce using rule 100 (expressions)
+
+
+State 200
+
+   97 expressions: ADD_EQUAL expression •
+
+    $default  reduce using rule 97 (expressions)
+
+
+State 201
+
+   98 expressions: SUBTRACT_EQUAL expression •
+
+    $default  reduce using rule 98 (expressions)
+
+
+State 202
+
+   96 expressions: '=' expression •
+
+    $default  reduce using rule 96 (expressions)
+
+
+State 203
+
+  134 extended_id: '[' expression • ']'
+
+    ']'  shift, and go to state 220
+
+
+State 204
+
+  135 extended_id: '.' identifier •
+
+    $default  reduce using rule 135 (extended_id)
+
+
+State 205
+
+   27 string_initilization: '=' • string_constant
+   28 array_initialization: '=' • '{' array_values '}'
+
+    string_constant  shift, and go to state 209
+    '{'              shift, and go to state 221
+
+
+State 206
+
+   22 array_dims: integer_constant ']' initilization •
+
+    $default  reduce using rule 22 (array_dims)
+
+
+State 207
+
+   24 initilization: string_initilization •
+
+    $default  reduce using rule 24 (initilization)
+
+
+State 208
+
+   25 initilization: array_initialization •
+
+    $default  reduce using rule 25 (initilization)
+
+
+State 209
+
+   27 string_initilization: '=' string_constant •
+
+    $default  reduce using rule 27 (string_initilization)
+
+
+State 210
+
+   81 conditional_statements: IF '(' simple_expression ')' • statement extended_conditional_statements
+
+    IF                    shift, and go to state 81
+    WHILE                 shift, and go to state 82
+    FOR                   shift, and go to state 83
+    DO                    shift, and go to state 84
+    INT                   shift, and go to state 1
+    CHAR                  shift, and go to state 2
+    FLOAT                 shift, and go to state 3
+    DOUBLE                shift, and go to state 4
+    LONG                  shift, and go to state 5
+    SHORT                 shift, and go to state 6
+    SIGNED                shift, and go to state 7
+    UNSIGNED              shift, and go to state 8
+    STRUCT                shift, and go to state 66
+    RETURN                shift, and go to state 85
+    BREAK                 shift, and go to state 86
+    VOID                  shift, and go to state 10
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    '{'                   shift, and go to state 96
+    ';'                   shift, and go to state 97
+    '('                   shift, and go to state 98
+
+    variable_declaration       go to state 99
+    structure_initialize       go to state 16
+    datatype                   go to state 69
+    statement                  go to state 222
+    multiple_statement         go to state 101
+    expression_statment        go to state 102
+    conditional_statements     go to state 103
+    iterative_statements       go to state 104
+    return_statement           go to state 105
+    break_statement            go to state 106
+    expression                 go to state 107
+    simple_expression          go to state 108
+    and_expression             go to state 109
+    unary_relation_expression  go to state 110
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 115
+    non_id                     go to state 116
+    function_call              go to state 117
+    constant                   go to state 118
+
+
+State 211
+
+   84 iterative_statements: WHILE '(' simple_expression ')' • statement
+
+    IF                    shift, and go to state 81
+    WHILE                 shift, and go to state 82
+    FOR                   shift, and go to state 83
+    DO                    shift, and go to state 84
+    INT                   shift, and go to state 1
+    CHAR                  shift, and go to state 2
+    FLOAT                 shift, and go to state 3
+    DOUBLE                shift, and go to state 4
+    LONG                  shift, and go to state 5
+    SHORT                 shift, and go to state 6
+    SIGNED                shift, and go to state 7
+    UNSIGNED              shift, and go to state 8
+    STRUCT                shift, and go to state 66
+    RETURN                shift, and go to state 85
+    BREAK                 shift, and go to state 86
+    VOID                  shift, and go to state 10
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    '{'                   shift, and go to state 96
+    ';'                   shift, and go to state 97
+    '('                   shift, and go to state 98
+
+    variable_declaration       go to state 99
+    structure_initialize       go to state 16
+    datatype                   go to state 69
+    statement                  go to state 223
+    multiple_statement         go to state 101
+    expression_statment        go to state 102
+    conditional_statements     go to state 103
+    iterative_statements       go to state 104
+    return_statement           go to state 105
+    break_statement            go to state 106
+    expression                 go to state 107
+    simple_expression          go to state 108
+    and_expression             go to state 109
+    unary_relation_expression  go to state 110
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 115
+    non_id                     go to state 116
+    function_call              go to state 117
+    constant                   go to state 118
+
+
+State 212
+
+   85 iterative_statements: FOR '(' for_initialization simple_expression • ';' expression ')'
+
+    ';'  shift, and go to state 224
+
+
+State 213
+
+   88 for_initialization: expression ';' •
+
+    $default  reduce using rule 88 (for_initialization)
+
+
+State 214
+
+   86 iterative_statements: DO statement WHILE '(' • simple_expression ')' ';'
+
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    '('                   shift, and go to state 98
+
+    simple_expression          go to state 225
+    and_expression             go to state 109
+    unary_relation_expression  go to state 110
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 138
+    non_id                     go to state 116
+    function_call              go to state 117
+    constant                   go to state 118
+
+
+State 215
+
+  143 extended_arguments: ',' • expression extended_arguments
+
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    '('                   shift, and go to state 98
+
+    expression                 go to state 226
+    simple_expression          go to state 108
+    and_expression             go to state 109
+    unary_relation_expression  go to state 110
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 115
+    non_id                     go to state 116
+    function_call              go to state 117
+    constant                   go to state 118
+
+
+State 216
+
+  142 arguments_list: expression extended_arguments •
+
+    $default  reduce using rule 142 (arguments_list)
+
+
+State 217
+
+  139 function_call: identifier '(' arguments ')' •
+
+    $default  reduce using rule 139 (function_call)
+
+
+State 218
+
+  105 simple_expression_extend: LOGICAL_OR and_expression simple_expression_extend •
+
+    $default  reduce using rule 105 (simple_expression_extend)
+
+
+State 219
+
+  108 and_expression_extend: LOGICAL_AND unary_relation_expression and_expression_extend •
+
+    $default  reduce using rule 108 (and_expression_extend)
+
+
+State 220
+
+  134 extended_id: '[' expression ']' •
+
+    $default  reduce using rule 134 (extended_id)
+
+
+State 221
+
+   28 array_initialization: '=' '{' • array_values '}'
+
+    integer_constant  shift, and go to state 227
+
+    array_values  go to state 228
+
+
+State 222
+
+   81 conditional_statements: IF '(' simple_expression ')' statement • extended_conditional_statements
+
+    ELSE  shift, and go to state 229
+
+    ELSE      [reduce using rule 83 (extended_conditional_statements)]
+    $default  reduce using rule 83 (extended_conditional_statements)
+
+    extended_conditional_statements  go to state 230
+
+
+State 223
+
+   84 iterative_statements: WHILE '(' simple_expression ')' statement •
+
+    $default  reduce using rule 84 (iterative_statements)
+
+
+State 224
+
+   85 iterative_statements: FOR '(' for_initialization simple_expression ';' • expression ')'
+
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    '('                   shift, and go to state 98
+
+    expression                 go to state 231
+    simple_expression          go to state 108
+    and_expression             go to state 109
+    unary_relation_expression  go to state 110
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 115
+    non_id                     go to state 116
+    function_call              go to state 117
+    constant                   go to state 118
+
+
+State 225
+
+   86 iterative_statements: DO statement WHILE '(' simple_expression • ')' ';'
+
+    ')'  shift, and go to state 232
+
+
+State 226
+
+  143 extended_arguments: ',' expression • extended_arguments
+
+    ','  shift, and go to state 215
+
+    $default  reduce using rule 144 (extended_arguments)
+
+    extended_arguments  go to state 233
+
+
+State 227
+
+   29 array_values: integer_constant • multiple_array_values
+
+    ','  shift, and go to state 234
+
+    $default  reduce using rule 31 (multiple_array_values)
+
+    multiple_array_values  go to state 235
+
+
+State 228
+
+   28 array_initialization: '=' '{' array_values • '}'
+
+    '}'  shift, and go to state 236
+
+
+State 229
+
+   82 extended_conditional_statements: ELSE • statement
+
+    IF                    shift, and go to state 81
+    WHILE                 shift, and go to state 82
+    FOR                   shift, and go to state 83
+    DO                    shift, and go to state 84
+    INT                   shift, and go to state 1
+    CHAR                  shift, and go to state 2
+    FLOAT                 shift, and go to state 3
+    DOUBLE                shift, and go to state 4
+    LONG                  shift, and go to state 5
+    SHORT                 shift, and go to state 6
+    SIGNED                shift, and go to state 7
+    UNSIGNED              shift, and go to state 8
+    STRUCT                shift, and go to state 66
+    RETURN                shift, and go to state 85
+    BREAK                 shift, and go to state 86
+    VOID                  shift, and go to state 10
+    identifier            shift, and go to state 87
+    integer_constant      shift, and go to state 88
+    string_constant       shift, and go to state 89
+    float_constant        shift, and go to state 90
+    character_constant    shift, and go to state 91
+    binary_constant       shift, and go to state 92
+    hexadecimal_constant  shift, and go to state 93
+    octal_constant        shift, and go to state 94
+    NOT                   shift, and go to state 95
+    '{'                   shift, and go to state 96
+    ';'                   shift, and go to state 97
+    '('                   shift, and go to state 98
+
+    variable_declaration       go to state 99
+    structure_initialize       go to state 16
+    datatype                   go to state 69
+    statement                  go to state 237
+    multiple_statement         go to state 101
+    expression_statment        go to state 102
+    conditional_statements     go to state 103
+    iterative_statements       go to state 104
+    return_statement           go to state 105
+    break_statement            go to state 106
+    expression                 go to state 107
+    simple_expression          go to state 108
+    and_expression             go to state 109
+    unary_relation_expression  go to state 110
+    regular_expression         go to state 111
+    sum_expression             go to state 112
+    term                       go to state 113
+    factor                     go to state 114
+    id                         go to state 115
+    non_id                     go to state 116
+    function_call              go to state 117
+    constant                   go to state 118
+
+
+State 230
+
+   81 conditional_statements: IF '(' simple_expression ')' statement extended_conditional_statements •
+
+    $default  reduce using rule 81 (conditional_statements)
+
+
+State 231
+
+   85 iterative_statements: FOR '(' for_initialization simple_expression ';' expression • ')'
+
+    ')'  shift, and go to state 238
+
+
+State 232
+
+   86 iterative_statements: DO statement WHILE '(' simple_expression ')' • ';'
+
+    ';'  shift, and go to state 239
+
+
+State 233
+
+  143 extended_arguments: ',' expression extended_arguments •
+
+    $default  reduce using rule 143 (extended_arguments)
+
+
+State 234
+
+   30 multiple_array_values: ',' • array_values
+
+    integer_constant  shift, and go to state 227
+
+    array_values  go to state 240
+
+
+State 235
+
+   29 array_values: integer_constant multiple_array_values •
+
+    $default  reduce using rule 29 (array_values)
+
+
+State 236
+
+   28 array_initialization: '=' '{' array_values '}' •
+
+    $default  reduce using rule 28 (array_initialization)
+
+
+State 237
+
+   82 extended_conditional_statements: ELSE statement •
+
+    $default  reduce using rule 82 (extended_conditional_statements)
+
+
+State 238
+
+   85 iterative_statements: FOR '(' for_initialization simple_expression ';' expression ')' •
+
+    $default  reduce using rule 85 (iterative_statements)
+
+
+State 239
+
+   86 iterative_statements: DO statement WHILE '(' simple_expression ')' ';' •
+
+    $default  reduce using rule 86 (iterative_statements)
+
+
+State 240
+
+   30 multiple_array_values: ',' array_values •
+
+    $default  reduce using rule 30 (multiple_array_values)

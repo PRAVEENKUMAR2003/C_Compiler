@@ -3,9 +3,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "symbol_table.h"
-#include "constant_table.h"
-#include "parser1.tab.h"
+//#include "symbol_table.h"
+//#include "constant_table.h"
+#include "parser2.tab.h"
 int cnt_ln = 1; 
 FILE *output_file;
  FILE *input_file;
@@ -13,8 +13,8 @@ FILE *output_file;
     int check_nested = 0;
 char buf[100];
 int ok = 0;
-symbol** symbol_table;
-constant** constant_table;
+//symbol** symbol_table;
+//constant** constant_table;
 
 /* 
 extra tokens to be defined:
@@ -33,7 +33,7 @@ alpha               [a-zA-Z]
 alphanum            {alpha}|{num}
 keyword             char|int|main|float|double|short|long|unsigned|signed|main|while|for|break|if|else|continue|return|void|struct|typedef
 escape_sequences    0|a|b|f|n|r|t|v|"\\"|"\""|"\'"
-ws                  [ \t\r\f\v]+
+ws                  [ \t\r\f]+
 
 %x DFA_ML
 %s DFA_NUM
@@ -66,9 +66,10 @@ ws                  [ \t\r\f\v]+
 #include[ ]*[/"<]{alpha}+\.h[/">]   { printf( "Line No. %d HEADER - %s\n", yylineno, yytext);}
 ("\"")[^\n\"]*("\"") { printf( "Line No. %d STRING - %s\n", yylineno, yytext);return string_constant;}
 ("\"")[^\n\"]* { printf( "Line No. %d ERROR: UNCLOSED STRING - %s\n", yylineno, yytext); return 0;}
-("\'")(("\\"({escape_sequences}))|.)("\'") {  printf( "Line No. %d CHARACTER - %s\n", yylineno, yytext);}
+("\'")(("\\"({escape_sequences}))|.)("\'") {  printf( "Line No. %d CHARACTER - %s\n", yylineno, yytext); return character_constant;}
 ("\'")(((("\\")[^0abfnrtv\\\"\'][^\n\']*))|[^\n\''][^\n\'']+)("\'") { printf( "Line No. %d ERROR: NOT A CHARACTER - %s\n", yylineno, yytext); return 0;}                        
 "int" { printf( "Line No. %d KEYWORD - %s\n", yylineno, yytext); return INT;}
+"char" { printf( "Line No. %d KEYWORD - %s\n", yylineno, yytext); return INT;}
 "void" { printf( "Line No. %d KEYWORD - %s\n", yylineno, yytext); return VOID;}
 "float" { printf( "Line No. %d KEYWORD - %s\n", yylineno, yytext); return FLOAT;}
 "double" { printf( "Line No. %d KEYWORD - %s\n", yylineno, yytext); return DOUBLE;}
@@ -125,7 +126,7 @@ ws                  [ \t\r\f\v]+
 "&" { printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext); return *yytext;}
 "^" { printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext);return *yytext; }
 \| { printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext); return *yytext;}
-\|\| { printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext); return OR_OR;}
+\|\| { printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext); return LOGICAL_OR;}
 "=" { printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext); return *yytext; }
 ">" { printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext); return GREAT;}
 "<" { printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext); return LESS; }
@@ -138,7 +139,7 @@ ws                  [ \t\r\f\v]+
 "*=" {printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext);return MULTIPLY_EQUAL;}
 "/=" {printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext);return DIVIDE_EQUAL;}
 "%=" {printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext);return MOD_EQUAL;}
-"&&" {printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext);return AND_AND;}
+"&&" {printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext);return LOGICAL_AND;}
 "?:" { printf( "Line No. %d OPERATOR - %s\n", yylineno,yytext); return *yytext;}
 "[" { printf("Line No. %d LEFT BRACKET - %s\n", yylineno, yytext);return *yytext; }
 "]" { printf("Line No. %d RIGHT BRACKET - %s\n", yylineno, yytext);return *yytext; }
@@ -149,10 +150,12 @@ ws                  [ \t\r\f\v]+
 "," { printf("Line No. %d COMMA - %s\n", yylineno, yytext);return *yytext; }
 ";" { printf("Line No. %d SEMICOLON - %s\n", yylineno, yytext);return *yytext; }
 #define[ \t]+[a-zA-Z_][a-zA-Z0-9_]*[ \t]+.* { printf("Line No. %d #define preprocessor directive- %s\n", yylineno, yytext); }
-([ \t\n])+ ; 
+[\n]+ ;
+{ws}+ ;
+
 . { 
     if(yytext[0] == '#')
-        printf("Line No. %d PREPROCESSOR ERROR - %s\n", yylineno, yytext);
+        {printf("Line No. %d PREPROCESSOR ERROR - %s\n", yylineno, yytext); return 1;}
     else
         printf("Line No. %d ERROR ILLEGAL CHARACTER - %s\n", yylineno, yytext);
     return 0;
